@@ -1,6 +1,5 @@
 import { TrialForm } from "@/components/forms/trial-form";
 import { Reveal } from "@/components/motion/reveal";
-import { RoughTarget } from "@/components/motion/rough-target";
 import { Kicker } from "@/components/ui/kicker";
 import { ChkList, Chk } from "@/components/ui/chk";
 import { AgendaMock } from "@/components/ui/agenda-mock";
@@ -38,19 +37,11 @@ export function Hero() {
             <span className="mark-brass text-accent">Falta zero</span>.
           </h1>
 
-          {/* WS3 · headline: strike-through + crossed-off como flourish latão de ÊNFASE
-              (tinta = --accent, não caneta vermelha) sobre a promessa — copy inalterada,
-              só ganha o wrapper. Desenham pós-fonts.ready, sobre o texto-LCP já pintado. */}
+          {/* Subtítulo limpo, sem marcações rough (strike/crossed-off removidos a pedido
+              do cliente — as riscas sobre a copy ficaram confusas). */}
           <p className="mt-6 max-w-prose text-body-lg text-ink-muted">
-            Agenda única pra{" "}
-            <RoughTarget type="strike-through" note={2}>todos os barbeiros</RoughTarget> +
-            lembrete automático no WhatsApp{" "}
-            {/* nowrap: `crossed-off` só lê como UM X se o alvo ocupar uma linha só.
-                Sem isso, "24h antes" quebra em 390px e vira dois X. */}
-            <RoughTarget type="crossed-off" note={3} className="whitespace-nowrap">
-              24h antes
-            </RoughTarget>. O cliente
-            lembra, você fatura.
+            Agenda única pra todos os barbeiros + lembrete automático no WhatsApp
+            24h antes. O cliente lembra, você fatura.
           </p>
 
           <Reveal group>
