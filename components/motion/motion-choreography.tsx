@@ -303,6 +303,13 @@ function scissorsRail(rail: HTMLElement) {
   const { line, scissors, bladeL, bladeR } = selectRail(rail);
   if (!line || !scissors || !bladeL || !bladeR) return;
 
+  // A tesoura PARA no topo do footer (a divisória `poste-hair`), não invade o rodapé:
+  // encurta o rail fixed pela altura do footer. Como o curso da tesoura e o `h-full` da
+  // linha derivam de `rail.clientHeight`, ambos se ajustam sozinhos → no fim do scroll a
+  // lâmina descansa exatamente na divisória. XIA-123.
+  const footer = document.querySelector<HTMLElement>("footer");
+  rail.style.bottom = footer ? `${footer.offsetHeight}px` : "0px";
+
   // Estado inicial: rastro ainda não cortado (scaleY 0, cresce p/ 1), tesoura no topo
   // apontando p/ baixo. Centragem X é do wrapper flex — o GSAP só mexe em `y`/`rotation`.
   gsap.set(scissors, { y: 0, rotation: 0 });
