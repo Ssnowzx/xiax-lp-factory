@@ -306,7 +306,7 @@ function scissorsRail(rail: HTMLElement) {
   // Estado inicial: rastro ainda não cortado (scaleY 0, cresce p/ 1), tesoura no topo
   // apontando p/ baixo. Centragem X é do wrapper flex — o GSAP só mexe em `y`/`rotation`.
   gsap.set(scissors, { y: 0, rotation: 0 });
-  gsap.set(line, { transformOrigin: "50% 0%", scaleY: 0 });
+  gsap.set(line, { clipPath: "inset(0px 0px 100% 0px)" });
   gsap.set([bladeL, bladeR], { svgOrigin: SCISSORS_PIVOT, rotation: 0 });
 
   // Flip 180° ao inverter a direção — `quickTo` é sancionado fora de timeline (gate 4)
@@ -342,10 +342,10 @@ function scissorsRail(rail: HTMLElement) {
   // Scrub-driven (o scroll dita o ritmo): ease "none" — mesma convenção dos demais
   // tweens de scrub deste arquivo (heroTimeline/galleryParallax). Curso da tesoura
   // medido por função → recalcula no refresh sem magic number.
-  // O rastro cresce (scaleY 0→1) no MESMO curso da tesoura → a ponta do filete acompanha
-  // a lâmina, com o trecho abaixo ainda "por cortar" (invisível). Curso da tesoura medido
-  // por função → recalcula no refresh sem magic number.
-  tl.to(line, { scaleY: 1, ease: "none" }, 0).to(
+  // O rastro se revela (clip-path inset bottom 100%→0%) no MESMO curso da tesoura → a
+  // ponta do filete acompanha a lâmina, com o trecho abaixo ainda "por cortar" (clipado).
+  // Curso da tesoura medido por função → recalcula no refresh sem magic number.
+  tl.to(line, { clipPath: "inset(0px 0px 0% 0px)", ease: "none" }, 0).to(
     scissors,
     { y: () => rail.clientHeight - scissors.offsetHeight, ease: "none" },
     0,
@@ -357,7 +357,7 @@ function scissorsRail(rail: HTMLElement) {
 // a identidade) e a tesoura repousa no topo, apontando p/ baixo. Conteúdo intacto.
 function scissorsStatic(rail: HTMLElement) {
   const { line, scissors } = selectRail(rail);
-  if (line) gsap.set(line, { transformOrigin: "50% 0%", scaleY: 1 });
+  if (line) gsap.set(line, { clipPath: "inset(0px 0px 0% 0px)" });
   if (scissors) gsap.set(scissors, { y: 0, rotation: 0 });
 }
 
@@ -464,18 +464,22 @@ export function MotionChoreography() {
       className="pointer-events-none fixed right-0 z-rail hidden w-[clamp(48px,6vw,72px)] text-accent md:block"
       style={{ top: "var(--header-h)", bottom: 0 }}
     >
-      {/* Linha do corte — o "rastro" que a tesoura vai deixando. Um filete que CRESCE de
-          cima p/ baixo via `transform: scaleY` (origin no topo), acompanhando a tesoura.
-          É `transform` puro (compositado na GPU, zero repaint por frame): usar
-          stroke-dashoffset aqui repintava o stroke a cada frame do scrub e derrubava o
-          FPS p95 de 57 p/ 54 em CPU 4x. XIA-121. */}
+      {/* Linha do corte — o "rastro" pontilhado e discreto que a tesoura vai deixando.
+          Os traços são um `repeating-linear-gradient` de altura fixa (não distorce), e a
+          REVELAÇÃO de cima p/ baixo é via `clip-path: inset()` (a ponta acompanha a
+          tesoura). clip-path com % não sofre o autoRound do GSAP (que arredonda px), e a
+          área pintada é só 1px de largura — sem o custo de repaint do stroke-dashoffset
+          que derrubava o FPS. XIA-122. */}
       <div
         data-scissors-line
-        className="absolute top-0 h-full w-px bg-current"
-        // centragem SEM transform (left/calc): o GSAP é dono exclusivo do `transform`
-        // (scaleY), sem brigar com um `translateX` de classe. scaleY(0) inicial evita
-        // flash do rastro cheio antes do JS montar.
-        style={{ left: "calc(50% - 0.5px)", opacity: 0.55, transform: "scaleY(0)", transformOrigin: "50% 0%" }}
+        className="absolute top-0 h-full w-px"
+        style={{
+          left: "calc(50% - 0.5px)",
+          opacity: 0.4,
+          backgroundImage:
+            "repeating-linear-gradient(to bottom, currentColor 0 2px, transparent 2px 8px)",
+          clipPath: "inset(0 0 100% 0)",
+        }}
       />
 
       {/* Wrapper de CENTRAGEM (flexbox, sem transform) → o GSAP fica dono só de `y`/
@@ -483,29 +487,29 @@ export function MotionChoreography() {
       <div className="absolute inset-x-0 top-0 flex justify-center">
         {/* Tesoura — SVG de aspecto FIXO (viewBox 48×104), transladada em px pelo scroll;
             gira 180° ao subir. Lâminas = dois <g> que giram no pivô do rivet (SCISSORS_PIVOT). */}
-        <div data-scissors className="w-[clamp(28px,3.4vw,40px)]">
+        <div data-scissors className="w-[clamp(20px,2.4vw,28px)]">
           <svg viewBox="0 0 48 104" fill="none" className="h-auto w-full">
             <g
               data-blade="l"
               stroke="currentColor"
-              strokeWidth={2.4}
+              strokeWidth={3.6}
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <circle cx="17" cy="13" r="7" />
-              <path d="M17 20 L24 46 L30 98" />
+              <circle cx="15" cy="12" r="6.5" />
+              <path d="M15 18 L24 46 L30 98" />
             </g>
             <g
               data-blade="r"
               stroke="currentColor"
-              strokeWidth={2.4}
+              strokeWidth={3.6}
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <circle cx="31" cy="13" r="7" />
-              <path d="M31 20 L24 46 L18 98" />
+              <circle cx="33" cy="12" r="6.5" />
+              <path d="M33 18 L24 46 L18 98" />
             </g>
-            <circle cx="24" cy="46" r="2.4" fill="currentColor" />
+            <circle cx="24" cy="46" r="2.8" fill="currentColor" />
           </svg>
         </div>
       </div>

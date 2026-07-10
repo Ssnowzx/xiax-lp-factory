@@ -198,7 +198,9 @@ html.anim-ready .overflow-hidden[data-state="open"] {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -0.06em;
+  /* Encostado na base dos glifos display (Anton tem muito espaço sob o baseline);
+     subido do -0.06em original a pedido do cliente ("linha muito afastada do zero"). */
+  bottom: 0.2em;
   height: 2px;
   border-radius: 2px;
   background: rgb(var(--accent));

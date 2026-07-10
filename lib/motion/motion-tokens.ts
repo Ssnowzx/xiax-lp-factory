@@ -156,8 +156,10 @@ export const ANIMATABLE = ["transform", "opacity", "clip-path"] as const;
  * ("corta, mas não distrai da conversão"); a tesoura vive só na gutter (≥md).
  */
 export const SCISSORS = {
-  /** amplitude de abertura/fechamento das lâminas por "snip" (graus). */
-  snipDeg: 9,
+  /** amplitude de abertura/fechamento das lâminas por "snip" (graus). Baixo de
+   *  propósito: acima de ~6° os anéis (cabos) se cruzam, o que uma tesoura real não
+   *  faz — o cliente pediu um fechamento mais contido. */
+  snipDeg: 5,
   /** nº de snips (ciclos abre-fecha) ao longo da página inteira — ritmo do corte. */
   snips: 16,
   /** rotação ao inverter o scroll: a tesoura vira e a lâmina passa a apontar p/ cima. */

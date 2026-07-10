@@ -30,14 +30,12 @@ export function Hero() {
         <div className="md:col-span-6 lg:col-span-5">
           <Kicker className="mb-4">Sistema de agendamento para barbearia</Kicker>
 
-          {/* WS3 · headline: circle NA PALAVRA FINAL "zero" (o payoff). O `mark-brass`
-              segue sublinhando "Falta zero" (assinatura do hero) — o círculo latão
-              apenas coroa a última palavra. */}
+          {/* WS3 · headline: "Falta zero" é a assinatura do hero, marcada só pelo
+              `mark-brass` (sublinhado latão). O círculo rough em "zero" foi removido
+              a pedido do cliente. */}
           <h1 className="text-balance font-display text-display-xl uppercase tracking-display-upper text-ink">
             Agenda cheia.{" "}
-            <span className="mark-brass text-accent">
-              Falta <RoughTarget type="circle" note={1}>zero</RoughTarget>
-            </span>.
+            <span className="mark-brass text-accent">Falta zero</span>.
           </h1>
 
           {/* WS3 · headline: strike-through + crossed-off como flourish latão de ÊNFASE
