@@ -56,8 +56,13 @@ export const TYPE_DEFAULTS: Record<RoughAnnotationType, PlanOptions> = {
   // a caixa de layout do #hero (overflow-x-clip da section intacto). XIA-118 P1.
   circle: { strokeWidth: 2, padding: [10, 16], iterations: 2 },
   highlight: { strokeWidth: 12, iterations: 1, multiline: true },
-  "strike-through": { strokeWidth: 2, iterations: 2 },
-  "crossed-off": { strokeWidth: 2, iterations: 2 },
+  // multiline em TODO tipo que atravessa o texto. Sem ele a lib usa
+  // `getBoundingClientRect()` do inline: quando o alvo quebra de linha, essa caixa
+  // vira o parágrafo inteiro e o traço é desenhado de canto a canto — o `crossed-off`
+  // do hero riscava as 3 linhas do subtítulo em 390px/768px. Com `multiline`, a lib
+  // usa `getClientRects()` e desenha uma marca por linha. XIA-119.
+  "strike-through": { strokeWidth: 2, iterations: 2, multiline: true },
+  "crossed-off": { strokeWidth: 2, iterations: 2, multiline: true },
   bracket: { strokeWidth: 2, padding: 4, iterations: 1 },
 };
 

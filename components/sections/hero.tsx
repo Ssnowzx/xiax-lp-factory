@@ -59,7 +59,11 @@ export function Hero() {
             Agenda única pra{" "}
             <RoughTarget type="strike-through" note={2}>todos os barbeiros</RoughTarget> +
             lembrete automático no WhatsApp{" "}
-            <RoughTarget type="crossed-off" note={3}>24h antes</RoughTarget>. O cliente
+            {/* nowrap: `crossed-off` só lê como UM X se o alvo ocupar uma linha só.
+                Sem isso, "24h antes" quebra em 390px e vira dois X. */}
+            <RoughTarget type="crossed-off" note={3} className="whitespace-nowrap">
+              24h antes
+            </RoughTarget>. O cliente
             lembra, você fatura.
           </p>
 
