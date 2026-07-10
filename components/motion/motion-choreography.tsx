@@ -324,6 +324,21 @@ function scissorsRail(rail: HTMLElement) {
   });
   let dir = 1;
 
+  // O rastro fica sempre À FRENTE da tesoura, na direção do movimento (pedido do cliente):
+  //  - DESCENDO: a tesoura lidera no topo e o rastro se estende ABAIXO dela, no caminho a
+  //    percorrer → clipa o trecho ACIMA da lâmina (`inset(top …)`).
+  //  - SUBINDO: a tesoura corta o rastro de baixo p/ cima → clipa o trecho ABAIXO da
+  //    lâmina (`inset(bottom …)`), o comportamento que o cliente aprovou.
+  // Por isso o clip é dirigido no onUpdate (depende da direção), não num tween linear.
+  const applyLineClip = (d: number, p: number) => {
+    const clip =
+      d === -1
+        ? `inset(0px 0px ${(1 - p) * 100}% 0px)` // subindo: corta de baixo
+        : `inset(${p * 100}% 0px 0px 0px)`; //        descendo: rastro à frente
+    gsap.set(line, { clipPath: clip });
+  };
+  applyLineClip(1, 0); // topo, descendo: rastro inteiro à frente (tesoura no topo)
+
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: document.documentElement,
@@ -337,6 +352,7 @@ function scissorsRail(rail: HTMLElement) {
           dir = self.direction;
           flipTo(dir === -1 ? SCISSORS.flipDeg : 0);
         }
+        applyLineClip(dir, self.progress);
         // "Corte": lâminas abrem/fecham conforme percorre a página. sin²(p·snips·π)
         // fica ≥0 e faz `snips` ciclos abre-fecha suaves; 0 = repouso (lâmina aberta).
         const theta =
@@ -346,13 +362,8 @@ function scissorsRail(rail: HTMLElement) {
       },
     },
   });
-  // Scrub-driven (o scroll dita o ritmo): ease "none" — mesma convenção dos demais
-  // tweens de scrub deste arquivo (heroTimeline/galleryParallax). Curso da tesoura
-  // medido por função → recalcula no refresh sem magic number.
-  // O rastro se revela (clip-path inset bottom 100%→0%) no MESMO curso da tesoura → a
-  // ponta do filete acompanha a lâmina, com o trecho abaixo ainda "por cortar" (clipado).
   // Curso da tesoura medido por função → recalcula no refresh sem magic number.
-  tl.to(line, { clipPath: "inset(0px 0px 0% 0px)", ease: "none" }, 0).to(
+  tl.to(
     scissors,
     { y: () => rail.clientHeight - scissors.offsetHeight, ease: "none" },
     0,
