@@ -2,7 +2,6 @@ import { Section } from "@/components/ui/section";
 import { Kicker } from "@/components/ui/kicker";
 import { Reveal } from "@/components/motion/reveal";
 import { ModelosPicker } from "@/components/modelos/modelos-picker";
-import { Motif } from "@/components/decor/motif";
 import { MODELOS, MODELOS_INTRO } from "@/lib/data/modelos";
 
 // #modelos — job: DIFERENCIAÇÃO / anti-objeção "cara de planilha genérica" (Brief §WS2,
@@ -16,21 +15,7 @@ import { MODELOS, MODELOS_INTRO } from "@/lib/data/modelos";
 // (Radix RadioGroup, 5 estados) e o `copywriter` refina a copy (SEAM em lib/data/modelos).
 export function Modelos() {
   return (
-    <Section
-      id="modelos"
-      width="content"
-      decor={
-        // Spec §2: brush no CANTO topo-esquerdo do FRAME EXTERNO (NUNCA dentro de
-        // [data-modelo-preview] — protege o CLS 0 e o radiogroup de cor P5). 36px op 0.08 --line.
-        <Motif
-          name="brush"
-          tint="line"
-          opacity={0.08}
-          size={36}
-          className="left-6 top-10 md:left-10"
-        />
-      }
-    >
+    <Section id="modelos" width="content">
       <Reveal className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between md:gap-8">
         <h2 className="max-w-prose font-display text-display-lg uppercase tracking-display-upper text-ink">
           {MODELOS_INTRO.titulo}

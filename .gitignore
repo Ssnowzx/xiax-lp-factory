@@ -24,3 +24,6 @@ secrets/
 # logs
 *.log
 npm-debug.log*
+
+# tsc incremental
+*.tsbuildinfo

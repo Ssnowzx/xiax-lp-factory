@@ -1,7 +1,6 @@
 import { StatNumber } from "@/components/ui/stat-number";
 import { Kicker } from "@/components/ui/kicker";
 import { Reveal } from "@/components/motion/reveal";
-import { Motif } from "@/components/decor/motif";
 
 // #dor — job: PROVA/CONTRASTE. Decisão única (§3.2): o custo da falta é um número GIGANTE
 // de latão (~R$2.000) que SANGRA na margem esquerda (`-ml-gutter` → borda do viewport) e
@@ -9,14 +8,6 @@ import { Motif } from "@/components/decor/motif";
 export function Dor() {
   return (
     <section id="dor" className="relative overflow-x-clip px-gutter py-section">
-      {/* Spec §2: blade = detalhe de CANTO topo-direito, fora do texto da dor. 40px op 0.08 --line. */}
-      <Motif
-        name="blade"
-        tint="line"
-        opacity={0.08}
-        size={40}
-        className="right-6 top-8"
-      />
       <div className="relative z-[1] mx-auto grid max-w-content items-center gap-8 md:grid-cols-12">
         <Reveal className="md:col-span-6">
           {/* sangra até a borda esquerda: -ml-gutter come o padding lateral da seção */}

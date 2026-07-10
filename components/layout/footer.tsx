@@ -1,6 +1,5 @@
 import { SITE } from "@/lib/site";
 import { PosteDivider } from "@/components/ui/icons";
-import { Motif } from "@/components/decor/motif";
 
 // Footer (UX/IA §1) — legal/crédito. Decisão única (Art Direction): rodapé mínimo de comanda
 // com HAIRLINE DE LATÃO no topo, tudo em mono `text-ink-subtle`. `pb` reserva a altura da
@@ -10,14 +9,6 @@ export function Footer() {
     <footer>
       <PosteDivider tone="brass" />
       <div className="relative px-gutter py-12 pb-24 md:pb-12">
-        {/* Spec §2: mustache = sign-off DISCRETO no rodapé. 24px op 0.06 --ink-subtle · estático. */}
-        <Motif
-          name="mustache"
-          tint="ink-subtle"
-          opacity={0.06}
-          size={24}
-          className="right-6 top-6 md:top-1/2 md:-translate-y-1/2"
-        />
         <div className="relative z-[1] mx-auto flex max-w-content flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div className="flex items-center gap-3">
             <span className="font-display text-title uppercase tracking-display-upper text-ink">

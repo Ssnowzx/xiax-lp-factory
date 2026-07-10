@@ -142,21 +142,26 @@ export type Clip = keyof typeof CLIP;
 export const ANIMATABLE = ["transform", "opacity", "clip-path"] as const;
 
 /**
- * MOTIF — camada de personalidade barber (XIA-136). Amplitudes FECHADAS pela Art
- * Direction Spec §4 (o diretor-de-arte é dono da intenção; canonizo os números aqui,
- * no seat, para que a ilha nunca use literal — mesmo precedente de `loop`/`pop`).
- * Justificativa vs. Brief §8: são micro-movimentos AMBIENTE de decoração atrás do
- * conteúdo (não entradas de bloco), deliberadamente pequenos p/ "vivo, mas ao fundo"
- * (Spec §4) — nunca distrair da conversão. Só `transform`/`opacity`; reduced-motion zera.
+ * SCISSORS — "trilho da tesoura" (scroll-cut). Decisão fechada com o cliente: uma
+ * tesoura ligada ao scroll desce/sobe pela lateral direita "cortando a página" e
+ * desenha uma LINHA de latão atrás (stroke-dashoffset num SVG fixo, fora do fluxo);
+ * ao inverter o scroll ela gira 180° (a lâmina sempre lidera o sentido do movimento).
+ * As amplitudes/ritmo do CORTE nascem AQUI (seat), nunca inline na timeline — mesmo
+ * precedente de `loop`/`pop`. Só `transform`/`opacity`; scrub numérico; reduced-motion
+ * → estático (linha inteira desenhada, tesoura em repouso).
+ *
+ * Justificativa vs. Brief §8: papel NOVO (gimmick decorativo de scroll pedido pelo
+ * cliente), fora das bandas de ENTRADA (micro/reveal/hero) — é micro-movimento CONTÍNUO
+ * dirigido pelo scroll, análogo ao `loop` ambiente. Graus deliberadamente pequenos
+ * ("corta, mas não distrai da conversão"); a tesoura vive só na gutter (≥md).
  */
-export const MOTIF = {
-  /** parallax dos atrás-de-título / hero (translateY máx, px) — Spec §4: ≤12px. */
-  parallax: 12,
-  /** floating do bookend #final (translateY máx, px) — Spec §4: ≤6px. */
-  float: 6,
-  /** glow do barber-pole do #hero — pulso de opacidade (Spec §4: 0.04↔0.07). */
-  glowMin: 0.04,
-  glowMax: 0.07,
+export const SCISSORS = {
+  /** amplitude de abertura/fechamento das lâminas por "snip" (graus). */
+  snipDeg: 9,
+  /** nº de snips (ciclos abre-fecha) ao longo da página inteira — ritmo do corte. */
+  snips: 16,
+  /** rotação ao inverter o scroll: a tesoura vira e a lâmina passa a apontar p/ cima. */
+  flipDeg: 180,
 } as const;
 
 /**

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/motion/reveal";
-import { Motif } from "@/components/decor/motif";
 import { cn } from "@/lib/ui/cn";
 import { GALLERY_SLOTS, type GallerySlot } from "@/lib/data/gallery";
 
@@ -64,21 +63,7 @@ function GallerySlotBox({ slot }: { slot: GallerySlot }) {
 
 export function Galeria() {
   return (
-    <Section
-      id="galeria"
-      width="content"
-      decor={
-        // Spec §2: razor = EMBLEMA de seção no topo-direito (na faixa do H2, NUNCA
-        // sobre as tiles de foto — a foto é a prova §3.3). 48px op 0.10 accent · estático.
-        <Motif
-          name="razor"
-          tint="accent"
-          opacity={0.1}
-          size={48}
-          className="right-6 top-10 md:right-10"
-        />
-      }
-    >
+    <Section id="galeria" width="content">
       <Reveal className="mx-auto mb-block max-w-prose text-center">
         <h2 className="font-display text-display-lg uppercase tracking-display-upper text-ink">
           Feito pra barbearia. Não parece planilha.

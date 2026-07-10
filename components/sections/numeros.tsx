@@ -2,7 +2,6 @@ import { Section } from "@/components/ui/section";
 import { StatNumber } from "@/components/ui/stat-number";
 import { Kicker } from "@/components/ui/kicker";
 import { Reveal } from "@/components/motion/reveal";
-import { Motif } from "@/components/decor/motif";
 
 // #numeros — job: PROVA (spine numérico REAL). Decisão única (§3.4): LINHA QUEBRADA de
 // stats — o `70%` é maior e deslocado ACIMA da baseline dos irmãos; jamais 3 cards iguais
@@ -15,21 +14,7 @@ const STATS = [
 
 export function Numeros() {
   return (
-    <Section
-      id="numeros"
-      decor={
-        // Spec §2: scissors ATRÁS DO TÍTULO, sangrando na borda direita (longe do 70%,
-        // que fica na coluna esquerda do grid abaixo). op 0.05 accent · parallax §4.
-        <Motif
-          name="scissors"
-          tint="accent"
-          opacity={0.05}
-          size="clamp(200px,26vw,360px)"
-          motion="parallax"
-          className="right-0 top-4 translate-x-[30%] md:top-8"
-        />
-      }
-    >
+    <Section id="numeros">
       <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between md:gap-8">
         <h2 className="max-w-prose font-display text-display-lg uppercase tracking-display-upper text-ink">
           Os números que enchem a cadeira.

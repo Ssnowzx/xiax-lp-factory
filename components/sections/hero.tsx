@@ -6,7 +6,6 @@ import { ChkList, Chk } from "@/components/ui/chk";
 import { AgendaMock } from "@/components/ui/agenda-mock";
 import { TrustStrip } from "@/components/ui/trust-strip";
 import { IconReminder } from "@/components/ui/icons";
-import { Motif } from "@/components/decor/motif";
 
 // #hero — job: PROMESSA. RSC: H1 (LCP), sub, checklist e CTA saem no HTML de servidor
 // (indexáveis, sem depender de JS). Keyword primária no EYEBROW (Message Map V2).
@@ -27,17 +26,6 @@ export function Hero() {
       id="hero"
       className="relative overflow-x-clip px-gutter pb-block pt-[calc(var(--header-h)+clamp(2rem,6vh,4rem))]"
     >
-      {/* Spec §2/§4: barber-pole = ASSINATURA, integrado ao fundo no sangramento direito,
-          atrás/abaixo do AgendaMock (col 6–12), FORA da coluna de texto (col 1–5). op 0.05
-          accent · glow (pulso 0.04↔0.07) + parallax ≤12px §4. Não é o LCP (o texto é). */}
-      <Motif
-        name="barber-pole"
-        tint="accent"
-        opacity={0.05}
-        size="clamp(180px,20vw,320px)"
-        motion="glow"
-        className="bottom-0 right-0 translate-x-[6%] md:right-[3%]"
-      />
       <div className="relative z-[1] mx-auto grid max-w-content items-start gap-10 md:grid-cols-12 md:gap-8">
         <div className="md:col-span-6 lg:col-span-5">
           <Kicker className="mb-4">Sistema de agendamento para barbearia</Kicker>

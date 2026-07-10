@@ -3,7 +3,6 @@ import { Kicker } from "@/components/ui/kicker";
 import { Reveal } from "@/components/motion/reveal";
 import { RoughTarget } from "@/components/motion/rough-target";
 import { HandwrittenNote } from "@/components/ui/handwritten-note";
-import { Motif } from "@/components/decor/motif";
 import type { RoughAnnotationType } from "@/lib/motion/rough-notation-plan";
 
 // #como-funciona — job: PROVA/MECANISMO. Decisão única (§3.3): os 3 passos são um TRILHO
@@ -33,21 +32,7 @@ const STEPS: Step[] = [
 
 export function ComoFunciona() {
   return (
-    <Section
-      id="como-funciona"
-      className="bg-surface"
-      decor={
-        // Spec §2: comb no CANTO inferior-direito (o trilho-poste já é a decisão forte).
-        // 40px op 0.08 --line · estático (canto não anima §4).
-        <Motif
-          name="comb"
-          tint="line"
-          opacity={0.08}
-          size={40}
-          className="bottom-6 right-6"
-        />
-      }
-    >
+    <Section id="como-funciona" className="bg-surface">
       <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between md:gap-8">
         <h2 className="max-w-prose font-display text-display-lg uppercase tracking-display-upper text-ink">
           No automático, do agendamento ao lembrete.

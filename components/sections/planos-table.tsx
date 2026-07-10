@@ -7,7 +7,6 @@ import { DUR, EASE_GSAP } from "@/lib/motion/motion-tokens";
 import { Button } from "@/components/ui/button";
 import { IconCheck } from "@/components/ui/icons";
 import { Reveal } from "@/components/motion/reveal";
-import { Motif } from "@/components/decor/motif";
 import { track } from "@/lib/analytics/track";
 import {
   PLANS,
@@ -137,17 +136,6 @@ function PlanCard({ plan, prevName, period }: { plan: Plan; prevName?: string; p
           : "border-line bg-surface-raised shadow-e2",
       )}
     >
-      {/* Spec §2: comb no CANTO topo-direito do card "mais popular" (o flag ★ fica no
-          topo-esquerda). 32px op 0.10 accent · estático. Canto vazio → sem colisão. */}
-      {plan.popular && (
-        <Motif
-          name="comb"
-          tint="accent"
-          opacity={0.1}
-          size={32}
-          className="right-4 top-4"
-        />
-      )}
       {plan.popular && (
         <span
           data-popular-flag

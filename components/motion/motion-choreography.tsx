@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -10,7 +10,8 @@ import {
   EASE_GSAP,
   CLIP,
   PARALLAX,
-  MOTIF,
+  SCISSORS,
+  mq,
 } from "@/lib/motion/motion-tokens";
 import { runRoughNotations } from "@/lib/motion/rough-notations";
 
@@ -272,83 +273,97 @@ function livePulse(loopDur: number) {
   });
 }
 
-// ---- 9. Motivos barber (XIA-136) — camada de personalidade ------------------
-// Hooks defensivos: ligam sozinhos quando o `ui-engineer` marcou `[data-motif=...]`
-// (no-op sem alvo). Só `transform`/`opacity`. Subconjunto Spec §4 — cantos de card
-// NÃO recebem `data-motif` (ficam estáticos por construção).
+// ---- 9. Trilho da tesoura (scroll-cut) — decisão do cliente ------------------
+// A tesoura desce/sobe pela LATERAL DIREITA ligada ao scroll, "cortando a página":
+// uma linha fina de latão é DESENHADA atrás dela (stroke-dashoffset, o único jeito de
+// "cortar" — sem rastro a tesoura só desliza) e ao INVERTER o scroll ela gira 180° e
+// aponta p/ cima (a lâmina sempre lidera). As lâminas abrem/fecham no scroll ("snip").
+//
+// FORA-DE-CLIP (armadilha do brief): o SVG é `position: fixed` na gutter, filho DIRETO
+// do <body> (o SmoothScrollProvider não renderiza DOM) — nenhum ancestral tem transform/
+// contain/filter/overflow que o corte; ele NÃO mora dentro de nenhuma <section> com
+// `overflow-x-clip`. CLS 0 (fora do fluxo). Só `transform`/`opacity` + `stroke-dashoffset`.
+// Lateral DIREITA: a coluna de texto ocupa a gutter esquerda em TODA seção; a direita só
+// tem o AgendaMock (sangra) no #hero — 10/11 seções têm a gutter direita livre.
 
-// 9a. Atrás-de-título (#numeros/#preco-fixo/#faq): parallax leve no scroll (translateY
-// ≤12px, sem rotação). `y` em px direto → sem medir layout. scrub decorativo (loose).
-function motifParallax() {
-  gsap.utils.toArray<HTMLElement>('[data-motif="parallax"]').forEach((el) => {
-    const sec = el.closest("section") ?? el;
-    gsap.fromTo(
-      el,
-      { y: MOTIF.parallax },
-      {
-        y: -MOTIF.parallax,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sec,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: SCRUB.loose,
-        },
-      },
-    );
+// Geometria do SVG da tesoura (pareia com o markup): pivô do rivet no viewBox 48×104.
+const SCISSORS_PIVOT = "24 46";
+
+function selectRail(rail: HTMLElement) {
+  return {
+    line: rail.querySelector<HTMLElement>("[data-scissors-line]"),
+    scissors: rail.querySelector<HTMLElement>("[data-scissors]"),
+    bladeL: rail.querySelector<SVGGElement>('[data-blade="l"]'),
+    bladeR: rail.querySelector<SVGGElement>('[data-blade="r"]'),
+  };
+}
+
+// 9a. Ramo ATIVO (≥md, sem reduced): tesoura ligada ao scroll.
+function scissorsRail(rail: HTMLElement) {
+  const { line, scissors, bladeL, bladeR } = selectRail(rail);
+  if (!line || !scissors || !bladeL || !bladeR) return;
+
+  // Estado inicial: rastro ainda não cortado (scaleY 0, cresce p/ 1), tesoura no topo
+  // apontando p/ baixo. Centragem X é do wrapper flex — o GSAP só mexe em `y`/`rotation`.
+  gsap.set(scissors, { y: 0, rotation: 0 });
+  gsap.set(line, { transformOrigin: "50% 0%", scaleY: 0 });
+  gsap.set([bladeL, bladeR], { svgOrigin: SCISSORS_PIVOT, rotation: 0 });
+
+  // Flip 180° ao inverter a direção — `quickTo` é sancionado fora de timeline (gate 4)
+  // e reaproveita o tween (barato). Tween por tempo → ease NÃO-linear (token do DS).
+  const flipTo = gsap.quickTo(scissors, "rotation", {
+    duration: DUR.microIn,
+    ease: EASE_GSAP.standard,
   });
-}
+  let dir = 1;
 
-// 9b. #hero barber-pole: brilho suave (pulso de opacidade 0.04↔0.07, loop lento) +
-// parallax leve no scroll. Gesto "vivo, mas ao fundo".
-function motifHeroPole() {
-  const pole = document.querySelector<HTMLElement>('[data-motif="glow"]');
-  if (!pole) return;
-  gsap.fromTo(
-    pole,
-    { opacity: MOTIF.glowMin },
-    {
-      opacity: MOTIF.glowMax,
-      duration: DUR.loop,
-      ease: EASE_GSAP.loop,
-      repeat: -1,
-      yoyo: true,
-    },
-  );
-  gsap.fromTo(
-    pole,
-    { y: MOTIF.parallax },
-    {
-      y: -MOTIF.parallax,
-      ease: "none",
-      scrollTrigger: {
-        trigger: "#hero",
-        start: "top top",
-        end: "bottom top",
-        scrub: SCRUB.loose,
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: document.documentElement,
+      start: "top top",
+      end: "bottom bottom",
+      scrub: SCRUB.base, // numérico (nunca `true`)
+      invalidateOnRefresh: true, // re-mede o curso da tesoura em resize/rotate
+      onUpdate: (self) => {
+        // Direção: gira a tesoura (a lâmina passa a liderar o sentido do movimento).
+        if (self.direction !== dir) {
+          dir = self.direction;
+          flipTo(dir === -1 ? SCISSORS.flipDeg : 0);
+        }
+        // "Corte": lâminas abrem/fecham conforme percorre a página. sin²(p·snips·π)
+        // fica ≥0 e faz `snips` ciclos abre-fecha suaves; 0 = repouso (lâmina aberta).
+        const theta =
+          Math.sin(self.progress * SCISSORS.snips * Math.PI) ** 2 * SCISSORS.snipDeg;
+        gsap.set(bladeL, { rotation: theta });
+        gsap.set(bladeR, { rotation: -theta });
       },
     },
+  });
+  // Scrub-driven (o scroll dita o ritmo): ease "none" — mesma convenção dos demais
+  // tweens de scrub deste arquivo (heroTimeline/galleryParallax). Curso da tesoura
+  // medido por função → recalcula no refresh sem magic number.
+  // O rastro cresce (scaleY 0→1) no MESMO curso da tesoura → a ponta do filete acompanha
+  // a lâmina, com o trecho abaixo ainda "por cortar" (invisível). Curso da tesoura medido
+  // por função → recalcula no refresh sem magic number.
+  tl.to(line, { scaleY: 1, ease: "none" }, 0).to(
+    scissors,
+    { y: () => rail.clientHeight - scissors.offsetHeight, ease: "none" },
+    0,
   );
 }
 
-// 9c. #final scissors: floating sutil (translateY ≤6px, loop lento) — bookend do hero.
-function motifFloat() {
-  const el = document.querySelector<HTMLElement>('[data-motif="float"]');
-  if (!el) return;
-  gsap.fromTo(
-    el,
-    { y: MOTIF.float },
-    {
-      y: -MOTIF.float,
-      duration: DUR.loop,
-      ease: EASE_GSAP.loop,
-      repeat: -1,
-      yoyo: true,
-    },
-  );
+// 9b. Ramo ESTÁTICO (reduced-motion / ?reduced=1): sem movimento. Decisão: a LINHA
+// fica inteira desenhada (o corte é o que vende a metáfora — mantê-lo estático preserva
+// a identidade) e a tesoura repousa no topo, apontando p/ baixo. Conteúdo intacto.
+function scissorsStatic(rail: HTMLElement) {
+  const { line, scissors } = selectRail(rail);
+  if (line) gsap.set(line, { transformOrigin: "50% 0%", scaleY: 1 });
+  if (scissors) gsap.set(scissors, { y: 0, rotation: 0 });
 }
 
 export function MotionChoreography() {
+  const railRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -407,12 +422,29 @@ export function MotionChoreography() {
         popularFlagPop();
         countUp();
         livePulse(loopDur);
-        // camada de personalidade barber (XIA-136) — subconjunto Spec §4
-        motifParallax();
-        motifHeroPole();
-        motifFloat();
 
         ScrollTrigger.refresh();
+      },
+    );
+
+    // Trilho da tesoura (scroll-cut) — registro SEPARADO com gate de largura próprio:
+    // só existe ≥md (mobile: sem gutter livre → o CSS `hidden md:block` já o esconde e
+    // aqui nem construímos os triggers). Reduced/?reduced=1 → ramo estático (linha inteira).
+    mm.add(
+      {
+        reduce: "(prefers-reduced-motion: reduce)",
+        ok: "(prefers-reduced-motion: no-preference)",
+        isDesktop: mq("md"),
+      },
+      (ctx) => {
+        const rail = railRef.current;
+        if (!rail || !ctx.conditions?.isDesktop) return;
+        const reduced = Boolean(ctx.conditions?.reduce) || forceReduced;
+        if (reduced) {
+          scissorsStatic(rail);
+          return;
+        }
+        scissorsRail(rail);
       },
     );
 
@@ -422,5 +454,61 @@ export function MotionChoreography() {
     };
   }, []);
 
-  return null;
+  // SVG decorativo puro (aria-hidden, pointer-events:none) — `position: fixed` na gutter
+  // direita, fora de qualquer <section> (nada o corta). `hidden md:block`: sem tesoura no
+  // mobile. CLS 0 (fora do fluxo). `text-accent` = latão (token do DS) via currentColor.
+  return (
+    <div
+      ref={railRef}
+      aria-hidden="true"
+      className="pointer-events-none fixed right-0 z-rail hidden w-[clamp(48px,6vw,72px)] text-accent md:block"
+      style={{ top: "var(--header-h)", bottom: 0 }}
+    >
+      {/* Linha do corte — o "rastro" que a tesoura vai deixando. Um filete que CRESCE de
+          cima p/ baixo via `transform: scaleY` (origin no topo), acompanhando a tesoura.
+          É `transform` puro (compositado na GPU, zero repaint por frame): usar
+          stroke-dashoffset aqui repintava o stroke a cada frame do scrub e derrubava o
+          FPS p95 de 57 p/ 54 em CPU 4x. XIA-121. */}
+      <div
+        data-scissors-line
+        className="absolute top-0 h-full w-px bg-current"
+        // centragem SEM transform (left/calc): o GSAP é dono exclusivo do `transform`
+        // (scaleY), sem brigar com um `translateX` de classe. scaleY(0) inicial evita
+        // flash do rastro cheio antes do JS montar.
+        style={{ left: "calc(50% - 0.5px)", opacity: 0.55, transform: "scaleY(0)", transformOrigin: "50% 0%" }}
+      />
+
+      {/* Wrapper de CENTRAGEM (flexbox, sem transform) → o GSAP fica dono só de `y`/
+          `rotation` na tesoura, sem conflitar com centragem nem piscar fora do eixo. */}
+      <div className="absolute inset-x-0 top-0 flex justify-center">
+        {/* Tesoura — SVG de aspecto FIXO (viewBox 48×104), transladada em px pelo scroll;
+            gira 180° ao subir. Lâminas = dois <g> que giram no pivô do rivet (SCISSORS_PIVOT). */}
+        <div data-scissors className="w-[clamp(28px,3.4vw,40px)]">
+          <svg viewBox="0 0 48 104" fill="none" className="h-auto w-full">
+            <g
+              data-blade="l"
+              stroke="currentColor"
+              strokeWidth={2.4}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="17" cy="13" r="7" />
+              <path d="M17 20 L24 46 L30 98" />
+            </g>
+            <g
+              data-blade="r"
+              stroke="currentColor"
+              strokeWidth={2.4}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="31" cy="13" r="7" />
+              <path d="M31 20 L24 46 L18 98" />
+            </g>
+            <circle cx="24" cy="46" r="2.4" fill="currentColor" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  );
 }

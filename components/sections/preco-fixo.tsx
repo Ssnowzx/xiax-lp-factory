@@ -3,7 +3,6 @@ import { StatNumber } from "@/components/ui/stat-number";
 import { Kicker } from "@/components/ui/kicker";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/motion/reveal";
-import { Motif } from "@/components/decor/motif";
 
 // #preco-fixo — job: PROVA/CONTRASTE DE PREÇO. Decisão única (§3.6): uma coluna "concorrente"
 // que SOBE (mais alta/densa) vs. uma coluna "Xbarber" que fica PARADA (baixa/estável) — a
@@ -11,21 +10,7 @@ import { Motif } from "@/components/decor/motif";
 // (apagado de propósito). O contraste de cor reforça o contraste de preço.
 export function PrecoFixo() {
   return (
-    <Section
-      id="preco-fixo"
-      decor={
-        // Spec §2: blade ATRÁS DO TÍTULO, borda direita (longe das cifras de preço,
-        // que ficam nos cards abaixo). op 0.05 accent · parallax §4.
-        <Motif
-          name="blade"
-          tint="accent"
-          opacity={0.05}
-          size="clamp(200px,24vw,340px)"
-          motion="parallax"
-          className="right-0 top-4 translate-x-[26%] md:top-8"
-        />
-      }
-    >
+    <Section id="preco-fixo">
       <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between md:gap-8">
         <h2 className="max-w-prose font-display text-display-lg uppercase tracking-display-upper text-ink">
           Preço fixo. Barbeiro ilimitado.

@@ -2,7 +2,6 @@ import { Section } from "@/components/ui/section";
 import { Kicker } from "@/components/ui/kicker";
 import { Badge } from "@/components/ui/badge";
 import { IconQuote, PosteDivider } from "@/components/ui/icons";
-import { Motif } from "@/components/decor/motif";
 
 // #depoimentos — job: PROVA SOCIAL [PLACEHOLDER]. Página de TESTE: NÃO inventar depoimento/
 // logo/nº de clientes (Message Map + Art Direction §3.5). Decisão única: os cards-placeholder
@@ -40,18 +39,6 @@ export function Depoimentos() {
             className={`relative flex min-h-[13rem] flex-col overflow-hidden rounded-surface border border-line bg-surface-raised shadow-e2 [contain-intrinsic-size:auto_13rem] ${card.span}`}
           >
             <PosteDivider tone="brass" />
-            {/* Spec §2: mustache = canto de card, DENTRO do clip do card. Ancorado no
-                canto inferior-direito (o topo-direito já tem o badge accent "Exemplo" —
-                a Spec pede topo-direito; movido p/ inferior-direito p/ não competir com o
-                badge nem baixar contraste §3.4 — deviação p/ ratificar no Fidelity Sign-off).
-                28px op 0.08 --line · estático. */}
-            <Motif
-              name="mustache"
-              tint="line"
-              opacity={0.08}
-              size={28}
-              className="bottom-3 right-3"
-            />
             <div className="relative z-[1] flex flex-1 flex-col p-6">
               <div className="flex items-center justify-between">
                 <IconQuote className="size-6 text-accent" />

@@ -2,7 +2,6 @@
 
 import * as Accordion from "@radix-ui/react-accordion";
 import { track } from "@/lib/analytics/track";
-import { Motif } from "@/components/decor/motif";
 import type { AnalyticsEvent } from "@/lib/analytics/events";
 
 // #faq — job: OBJEÇÃO + risk-reversal, colada ao clique final. Radix Accordion
@@ -36,16 +35,6 @@ const ITEMS: { id: FaqId; q: string; a: string }[] = [
 export function Faq() {
   return (
     <section id="faq" className="relative overflow-x-clip px-gutter py-section">
-      {/* Spec §2: barber-pole ATRÁS DO TÍTULO, sangrando na borda direita (o H2 é
-          esquerdo → o pole não cruza o texto). op 0.05 --line · parallax §4. */}
-      <Motif
-        name="barber-pole"
-        tint="line"
-        opacity={0.05}
-        size="clamp(200px,24vw,340px)"
-        motion="parallax"
-        className="right-0 top-8 translate-x-[24%]"
-      />
       <div className="relative z-[1] mx-auto max-w-content">
         <h2 className="max-w-prose font-display text-display-lg uppercase tracking-display-upper text-ink">
           Ainda na dúvida?
