@@ -3,11 +3,12 @@ import { StatNumber } from "@/components/ui/stat-number";
 import { Kicker } from "@/components/ui/kicker";
 import { Reveal } from "@/components/motion/reveal";
 
-// #numeros — job: PROVA (spine numérico REAL). Decisão única (§3.4): LINHA QUEBRADA de
-// stats — o `70%` é maior e deslocado ACIMA da baseline dos irmãos; jamais 3 cards iguais
-// (anti-slop). Um accent por seção → só o 70% em latão. Números = <p aria-hidden> (StatNumber).
+// #numeros — job: PROVA (spine numérico REAL). Três stats na MESMA linha de base (o
+// cliente rejeitou a linha quebrada com o 70% deslocado — lia "solto"). O destaque do
+// 70% vem só da COR (latão), não do tamanho: um accent por seção. O "até" é rótulo
+// pequeno sobre o número (não gigante). Números = <p aria-hidden> (StatNumber).
 const STATS = [
-  { value: "até 70%", countTo: 70, label: "menos faltas com lembrete automático", anchor: true },
+  { value: "70%", prefix: "até", countTo: 70, label: "menos faltas com lembrete automático", anchor: true },
   { value: "98%", countTo: 98, label: "de abertura no WhatsApp (e-mail fica em ~20%)", anchor: false },
   { value: "~R$ 2.000", countTo: 2000, label: "de volta no seu caixa por mês", anchor: false },
 ];
@@ -23,23 +24,17 @@ export function Numeros() {
       </div>
 
       <Reveal group>
-        <ul className="mt-block grid gap-10 md:grid-cols-3 md:items-end md:gap-8">
+        <ul className="mt-block grid gap-x-8 gap-y-10 sm:grid-cols-3 sm:items-end">
           {STATS.map((stat) => (
-            <li
-              key={stat.value}
-              className={
-                stat.anchor
-                  ? "reveal-item md:-translate-y-8" // 70% sobe acima da baseline (quebra do grid)
-                  : "reveal-item"
-              }
-            >
+            <li key={stat.value} className="reveal-item">
               <StatNumber
                 value={stat.value}
+                prefix={stat.prefix}
                 countTo={stat.countTo}
                 tone={stat.anchor ? "accent" : "ink"}
-                size={stat.anchor ? "2xl" : "xl"}
+                size="xl"
               />
-              <p className="mt-2 max-w-[24ch] text-body text-ink-muted">{stat.label}</p>
+              <p className="mt-3 max-w-[24ch] text-body text-ink-muted">{stat.label}</p>
             </li>
           ))}
         </ul>

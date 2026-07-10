@@ -18,6 +18,9 @@ export interface StatNumberProps extends VariantProps<typeof stat> {
   // Sem `countTo` (ou sem JS/reduced), a string final já está no HTML — comportamento atual.
   countTo?: number;
   countDecimals?: number;
+  // Rótulo pequeno ACIMA do número (ex.: "até" sobre "70%"). Posicionado absoluto
+  // (`bottom-full`) → NÃO empurra o número, então vários stats irmãos alinham a base.
+  prefix?: string;
   className?: string;
 }
 
@@ -25,12 +28,21 @@ export function StatNumber({
   value,
   countTo,
   countDecimals = 0,
+  prefix,
   tone,
   size,
   className,
 }: StatNumberProps) {
   return (
-    <p aria-hidden="true" className={cn(stat({ tone, size }), className)}>
+    <p
+      aria-hidden="true"
+      className={cn(stat({ tone, size }), prefix && "relative", className)}
+    >
+      {prefix ? (
+        <span className="absolute bottom-full left-0 mb-1 font-mono text-label uppercase leading-none tracking-label text-ink-subtle">
+          {prefix}
+        </span>
+      ) : null}
       {countUp(value, countTo, countDecimals)}
     </p>
   );
