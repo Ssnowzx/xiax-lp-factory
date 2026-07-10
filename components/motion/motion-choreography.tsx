@@ -127,7 +127,19 @@ function heroTimeline(hero: HTMLElement, media: HTMLElement | null, mediaH: numb
     tl.fromTo(
       h1,
       { clipPath: CLIP.hiddenUp, y: 24, autoAlpha: 1 },
-      { clipPath: CLIP.shown, y: 0, duration: DUR.hero, ease: EASE_GSAP.hero },
+      {
+        clipPath: CLIP.shown,
+        y: 0,
+        duration: DUR.hero,
+        ease: EASE_GSAP.hero,
+        // `CLIP.shown` é `inset(0 0 0 0)` — revela 100% do texto, mas CONTINUA
+        // sendo um clip na borda da caixa. O `rough-notation` appenda o SVG do
+        // círculo DENTRO do h1, e a elipse de "zero" vaza ~34px abaixo dele:
+        // esses 34px eram decepados. Limpar a prop no fim tira o clip do
+        // caminho. A timeline não tem ScrollTrigger e nunca reverte, então o
+        // `fromTo` não precisa do valor final preservado. XIA-120.
+        onComplete: () => gsap.set(h1, { clipPath: "none" }),
+      },
       0,
     );
   }
