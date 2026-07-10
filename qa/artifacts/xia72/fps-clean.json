@@ -1,0 +1,4 @@
+{"label":"A desktop 1x","viewport":{"width":1440,"height":900},"cpuRate":1,"frames":244,"fpsMedian":60,"fpsP95":60,"fpsP99":60,"worstMs":17,"pctLongFrames":0,"reachedBottom":3,"maxY":7330,"stuckRevealsInViewportAtBottom":0}
+{"label":"B desktop 4x","viewport":{"width":1440,"height":900},"cpuRate":4,"frames":253,"fpsMedian":60,"fpsP95":60,"fpsP99":60,"worstMs":17,"pctLongFrames":0,"reachedBottom":3,"maxY":7330,"stuckRevealsInViewportAtBottom":0}
+{"label":"C mobile 4x","viewport":{"width":390,"height":844},"cpuRate":4,"frames":299,"fpsMedian":60,"fpsP95":60,"fpsP99":60,"worstMs":17,"pctLongFrames":0,"reachedBottom":14,"maxY":10680,"stuckRevealsInViewportAtBottom":0}
+DONE

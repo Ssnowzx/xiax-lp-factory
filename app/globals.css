@@ -1,0 +1,255 @@
+/* Ordem obrigatória: os tokens (FONTE ÚNICA do Design System) antes do Tailwind. */
+@import "../styles/tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    /* --header-h é a FONTE ÚNICA (UX/IA §5). Backstop de teclado + destino de hash
+       sem JS: o header sticky nunca obscurece o alvo de âncora (WCAG 2.2 · 2.4.11). */
+    scroll-padding-top: var(--header-h);
+  }
+
+  /* Todo alvo de âncora recua a altura do header (destino de hash correto). */
+  :target,
+  [id] {
+    scroll-margin-top: var(--header-h);
+  }
+
+  /* scroll-behavior: smooth SÓ no fallback sem-JS / pré-hidratação.
+     Regra de motion (XIA-70): NUNCA CSS smooth coexistindo com Lenis — o único
+     scroll engine. `html.anim-ready` (script no <body>) marca JS+motion ligados,
+     que é exatamente quando o Lenis monta (smooth-scroll.tsx); aí o smooth some e
+     o Lenis assume. Gate `no-preference` embutido: sob reduced-motion não há smooth
+     (e o :not(.anim-ready), de maior especificidade, não vaza para dentro do reduce). */
+  @media (prefers-reduced-motion: no-preference) {
+    html:not(.anim-ready) {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgb(var(--accent));
+    color: rgb(var(--accent-ink));
+  }
+
+  /* Foco visível global (2.4.7 AA) — contraste ≥3:1 pelo accent. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Skip-link (UX/IA §5): fora da tela até o foco; 1º tabbável do documento. */
+  .skip-link {
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: var(--z-preloader);
+    transform: translateY(-150%);
+    border-radius: var(--radius-control);
+    background: rgb(var(--accent));
+    color: rgb(var(--accent-ink));
+    padding: 0.625rem 1rem;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.75rem; /* 12px — piso legível (Lighthouse BP), espelha o token `label` */
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    transition: transform var(--dur-micro) var(--ease-standard);
+  }
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+}
+
+/* ---- Assento de motion (Standard = micro/CSS). Progressive enhancement ----
+   Padrão: TUDO visível (sem JS / reduced-motion). O estado escondido só existe sob
+   html.anim-ready, que um script no <body> só adiciona quando há JS e motion permitido.
+   A revelação vem do IntersectionObserver setando [data-revealed="true"] (Reveal island).
+   Só opacity/transform → zero shift de layout (CLS 0). */
+.reveal,
+.reveal-group .reveal-item {
+  opacity: 1;
+}
+
+/* `:not(.gsap-live)` = escopo do tier CSS (Standard): quando a camada de coreografia
+   GSAP monta (Flagship), ela marca html.gsap-live e ASSUME estes reveals — o CSS sai de
+   cena (sem double-drive). Sem JS/pré-hidratação, o tier CSS segue como fallback. */
+html.anim-ready:not(.gsap-live) .reveal,
+html.anim-ready:not(.gsap-live) .reveal-group .reveal-item {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--dur-micro-in) var(--ease-dramatic),
+    transform var(--dur-micro-in) var(--ease-dramatic);
+  will-change: opacity, transform;
+}
+
+html.anim-ready:not(.gsap-live) .reveal[data-revealed="true"],
+html.anim-ready:not(.gsap-live) .reveal-group[data-revealed="true"] .reveal-item {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* stagger automático por posição entre irmãos */
+html.anim-ready:not(.gsap-live) .reveal-group[data-revealed="true"] .reveal-item:nth-child(2) { transition-delay: 0.06s; }
+html.anim-ready:not(.gsap-live) .reveal-group[data-revealed="true"] .reveal-item:nth-child(3) { transition-delay: 0.12s; }
+html.anim-ready:not(.gsap-live) .reveal-group[data-revealed="true"] .reveal-item:nth-child(4) { transition-delay: 0.18s; }
+
+/* ---- Radix Accordion (FAQ): expand/collapse por altura medida do Radix ----
+   Usa --radix-accordion-content-height. Overflow:hidden no Content reserva a caixa;
+   gated por anim-ready; reduced-motion neutraliza abaixo. */
+@keyframes acc-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+@keyframes acc-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+html.anim-ready .overflow-hidden[data-state="open"] {
+  animation: acc-down var(--dur-micro-in) var(--ease-standard);
+}
+
+/* ---- Textura do poste de barbeiro (1 textura deliberada — Art Direction §2.5) ----
+   Listra diagonal em hairline. `--brass` troca o neutro por latão pontual. aria-hidden. */
+.poste-hair {
+  height: 8px;
+  width: 100%;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgb(var(--line) / 0.9) 0 1.5px,
+    transparent 1.5px 9px
+  );
+}
+.poste-hair--brass {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgb(var(--accent) / 0.55) 0 1.5px,
+    transparent 1.5px 9px
+  );
+}
+
+/* ---- Moldura de mídia premium (#galeria — Brief V2 §7) --------------------
+   Skin do slot da galeria/showcase: 16:9 reservado (CLS 0), radius/shadow/borda do
+   DS, e um "vazio premium" quando ainda não há imagem — tint espresso + hairline
+   de latão sutil, nada de lorem gráfico quebrado. Tokens only. A imagem real
+   (art-producer-assets) entra por cima sem mudar caixa. */
+.media-frame {
+  position: relative;
+  aspect-ratio: var(--ratio-media);
+  overflow: hidden;
+  border-radius: var(--radius-media);
+  border: 1px solid rgb(var(--line-strong) / 0.7);
+  box-shadow: var(--shadow-media);
+  background-color: rgb(var(--surface-raised));
+}
+/* vazio premium: gradiente espresso + malha diagonal latão hairline (aria-hidden) */
+.media-frame[data-empty="true"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(135deg, rgb(var(--surface-raised)) 0%, rgb(var(--surface)) 100%),
+    repeating-linear-gradient(-45deg, rgb(var(--accent) / 0.05) 0 1px, transparent 1px 14px);
+  background-blend-mode: normal;
+}
+/* imagem real preenche a caixa sem shift; zoom sutil no hover fica com o motion-engineer */
+.media-frame > img,
+.media-frame > picture > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* label discreto "imagem 16:9" — mono uppercase, ink-subtle (AA em surface-raised) */
+.media-frame__label {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.625rem;
+  z-index: var(--z-badge);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem; /* 12px — piso legível (Lighthouse BP), espelha o token `label` */
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(var(--ink-subtle));
+}
+
+/* ---- Sublinhado de latão desenhado ("acaba com a falta" — hero/final) ----
+   Estático/reduced: já desenhado (scaleX 1). Com JS+motion: desenha 1x da esq→dir.
+   Só transform → CLS 0. */
+.mark-brass {
+  position: relative;
+  white-space: nowrap;
+}
+.mark-brass::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.06em;
+  height: 2px;
+  border-radius: 2px;
+  background: rgb(var(--accent));
+  transform: scaleX(1);
+  transform-origin: left;
+}
+html.anim-ready .mark-brass::after {
+  animation: draw-x var(--dur-micro-in) var(--ease-dramatic) both;
+  animation-delay: 0.28s;
+}
+
+/* Hairline conectora (trilho #como-funciona, moldura #planos): desenha 1x da esq→dir. */
+.hair-draw {
+  transform-origin: left;
+}
+html.anim-ready .hair-draw {
+  animation: draw-x var(--dur-micro-in) var(--ease-standard) both;
+  animation-delay: 0.12s;
+}
+
+@keyframes draw-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* scroll-behavior fica auto por padrão: o smooth só existe sob
+     (prefers-reduced-motion: no-preference) + html:not(.anim-ready) — cf. base. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── rough-notation (WS3 · XIA-92) — ASSENTO do Front-end Architect ──────────
+   `.rn-target`: neutraliza o `<mark>` nativo (sem fundo/cor amarela do browser).
+   O texto fica normal e SELECIONÁVEL; a marcação latão é desenhada por cima como
+   SVG decorativo pela ilha `rough-notations.ts`. `.rough-annotation` é o SVG que a
+   lib appenda no body FORA do fluxo (position:absolute) → CLS 0; forçamos
+   `pointer-events:none` p/ o texto seguir clicável/selecionável. Tinta = --accent. */
+.rn-target {
+  background: transparent;
+  color: inherit;
+}
+.rough-annotation {
+  pointer-events: none;
+}

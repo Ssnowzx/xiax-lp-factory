@@ -1,0 +1,23 @@
+{
+  "hiddenState": {
+    "barFound": true,
+    "ariaHidden": "true",
+    "inertProp": true,
+    "hasInertAttr": true,
+    "inertAttrValue": "",
+    "linkFocusableWhenHidden": false,
+    "linkTabIndex": 0
+  },
+  "axeHidden": {
+    "violations": 0,
+    "ariaHiddenFocus": 0,
+    "ids": []
+  },
+  "visibleState": {
+    "ariaHidden": "false",
+    "inertProp": false,
+    "hasInertAttr": false,
+    "linkFocusableWhenVisible": true
+  },
+  "verdict": "A11Y-02 RESOLVED"
+}

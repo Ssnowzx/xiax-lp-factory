@@ -1,0 +1,118 @@
+{
+  "initial": {
+    "groupLabel": "Ciclo de cobrança",
+    "radios": [
+      {
+        "label": "Mensal",
+        "checked": "true",
+        "tabindex": 0,
+        "focused": false
+      },
+      {
+        "label": "Anual~2 meses grátis",
+        "checked": "false",
+        "tabindex": -1,
+        "focused": false
+      }
+    ]
+  },
+  "afterFocus": {
+    "groupLabel": "Ciclo de cobrança",
+    "radios": [
+      {
+        "label": "Mensal",
+        "checked": "true",
+        "tabindex": 0,
+        "focused": true
+      },
+      {
+        "label": "Anual~2 meses grátis",
+        "checked": "false",
+        "tabindex": -1,
+        "focused": false
+      }
+    ]
+  },
+  "afterArrowRight": {
+    "groupLabel": "Ciclo de cobrança",
+    "radios": [
+      {
+        "label": "Mensal",
+        "checked": "false",
+        "tabindex": -1,
+        "focused": false
+      },
+      {
+        "label": "Anual~2 meses grátis",
+        "checked": "true",
+        "tabindex": 0,
+        "focused": true
+      }
+    ]
+  },
+  "afterArrowLeft": {
+    "groupLabel": "Ciclo de cobrança",
+    "radios": [
+      {
+        "label": "Mensal",
+        "checked": "true",
+        "tabindex": 0,
+        "focused": true
+      },
+      {
+        "label": "Anual~2 meses grátis",
+        "checked": "false",
+        "tabindex": -1,
+        "focused": false
+      }
+    ]
+  },
+  "afterEnd": {
+    "groupLabel": "Ciclo de cobrança",
+    "radios": [
+      {
+        "label": "Mensal",
+        "checked": "false",
+        "tabindex": -1,
+        "focused": false
+      },
+      {
+        "label": "Anual~2 meses grátis",
+        "checked": "true",
+        "tabindex": 0,
+        "focused": true
+      }
+    ]
+  },
+  "afterHome": {
+    "groupLabel": "Ciclo de cobrança",
+    "radios": [
+      {
+        "label": "Mensal",
+        "checked": "true",
+        "tabindex": 0,
+        "focused": true
+      },
+      {
+        "label": "Anual~2 meses grátis",
+        "checked": "false",
+        "tabindex": -1,
+        "focused": false
+      }
+    ]
+  },
+  "tabEscapes": {
+    "tag": "A",
+    "role": null,
+    "stillInGroup": false
+  },
+  "verdict": {
+    "singleSelected": true,
+    "rovingTabindex": true,
+    "arrowMovesSelection": true,
+    "endSelectsLast": true,
+    "homeSelectsFirst": true,
+    "noKeyboardTrap": true
+  },
+  "PASS": true
+}

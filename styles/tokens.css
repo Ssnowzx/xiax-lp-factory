@@ -1,0 +1,257 @@
+/* =============================================================================
+   Design System — LP Xbarber  ·  tokens.css
+   FONTE ÚNICA de tokens visuais (dono: design-system-architect).
+   Estética: barbearia masculina — espresso/couro + latão (brass), alto contraste.
+
+   Arquitetura de 2 níveis:
+     1) PRIMITIVOS  — escala crua, tema-agnóstica, IMUTÁVEL. NUNCA num componente.
+                       Cor em CANAIS RGB ("r g b") p/ o <alpha-value> do Tailwind.
+     2) SEMÂNTICOS  — papéis (role) que VIRAM com data-theme. O componente só usa estes.
+
+   Contraste (WCAG 2.2 AA) VALIDADO nos DOIS temas — ver bloco de prova no rodapé.
+   ============================================================================= */
+
+:root {
+  /* ---- PRIMITIVOS: neutro quente "espresso" (canais RGB) --------------------- */
+  --espresso-950: 20 17 14;     /* #14110E */
+  --espresso-900: 28 24 21;     /* #1C1815 */
+  --espresso-850: 36 31 26;     /* #241F1A */
+  --espresso-800: 51 44 36;     /* #332C24 */
+  --espresso-600: 122 106 82;   /* #7A6A52 */
+  --espresso-500: 138 122 95;   /* #8A7A5F */
+
+  /* ---- PRIMITIVOS: neutro claro "bone" -------------------------------------- */
+  --bone-25:  255 253 249;      /* #FFFDF9 */
+  --bone-50:  251 246 236;      /* #FBF6EC */
+  --bone-100: 243 236 224;      /* #F3ECE0 */
+  --bone-200: 226 215 196;      /* #E2D7C4 */
+  --bone-300: 196 182 162;      /* #C4B6A2 */
+  --bone-400: 156 143 124;      /* #9C8F7C */
+  --bone-500: 110 98 82;        /* #6E6252 */
+  --bone-600: 92 81 66;         /* #5C5142 */
+  --bone-900: 35 28 20;         /* #231C14 */
+
+  /* ---- PRIMITIVOS: latão "brass" (accent da marca) ------------------------- */
+  --brass-300: 224 178 94;      /* #E0B25E */
+  --brass-400: 214 162 78;      /* #D6A24E */
+  --brass-700: 138 90 22;       /* #8A5A16 */
+
+  /* ---- PRIMITIVOS: cores de TEMA do preview #modelos (P5 · XIA-115) ---------
+     Conjunto FECHADO on-brand dark premium (NÃO é color-picker RGB livre). Cada
+     tom é bright p/ passar contraste AA nas superfícies do preview nos DOIS usos
+     (texto do wordmark sobre surface · fundo do CTA "Agendar horário"). O ink de
+     texto-sobre-cor é SEMPRE --espresso-950 (uniforme). Prova no rodapé deste arq. */
+  --theme-brass: 214 162 78;    /* #D6A24E — latão  (DEFAULT · = --brass-400) */
+  --theme-cobre: 224 145 106;   /* #E0916A — cobre quente */
+  --theme-sage:  147 200 146;   /* #93C892 — verde-sálvia */
+  --theme-azure: 134 184 222;   /* #86B8DE — azul-aço */
+  --theme-malva: 199 155 209;   /* #C79BD1 — malva premium */
+
+  /* ---- PRIMITIVOS: status --------------------------------------------------- */
+  --green-300: 123 196 127;     /* #7BC47F */
+  --green-700: 46 107 50;       /* #2E6B32 */
+  --amber-300: 232 184 75;      /* #E8B84B */
+  --amber-800: 122 83 0;        /* #7A5300 */
+  --rust-300:  232 136 107;     /* #E8886B */
+  --rust-700:  168 50 20;       /* #A83214 */
+  --steel-300: 127 178 217;     /* #7FB2D9 */
+  --steel-700: 31 92 136;       /* #1F5C88 */
+
+  /* ---- ESCALAS FÍSICAS (tema-agnósticas) ----------------------------------- */
+  /* espaçamento 4/8pt já vem do Tailwind; aqui só os semânticos de layout.
+     RITMO VERTICAL (Brief V2 §3/§4 · bug do cliente "vazio pós-hero e no FAQ"):
+     UMA fonte p/ o padding entre seções (--space-section) e UMA p/ o respiro
+     dentro da seção (--space-block). ui-engineer aplica `py-section`/`space-block`
+     e PARA de improvisar `mt-8`/`mt-12` avulso — o ritmo fica consistente. */
+  --space-section: clamp(88px, 13vh, 150px);   /* ritmo vertical ENTRE seções (único) */
+  --space-block: clamp(40px, 6vh, 72px);        /* respiro DENTRO da seção (título↔grid, blocos) */
+  --space-gutter: 7vw;                           /* margem lateral fluida */
+  --header-h: 64px;                              /* FONTE ÚNICA (UX/IA §5): scroll-padding-top + scroll-margin-top + offset do Lenis */
+
+  /* raio POR PAPEL — nunca 8px em tudo (isso é carimbo de template) */
+  --radius-control: 6px;    /* botão, chip */
+  --radius-field: 8px;      /* input, select */
+  --radius-surface: 10px;   /* card, stat */
+  --radius-window: 12px;    /* painel de oferta, dialog, card de plano */
+  --radius-media: 14px;     /* moldura da galeria/showcase (placeholder premium 16:9) */
+  --radius-pill: 999px;     /* badge/tag pill, .cta-bar */
+
+  /* GALERIA/SHOWCASE (NOVA #galeria — Brief V2 §7). Placeholder deve parecer premium
+     mesmo VAZIO. Radius/shadow/line vêm do DS; proporção reservada p/ CLS 0. */
+  --ratio-media: 16 / 9;                         /* slot padrão (art-producer-assets confirma destaques) */
+  --shadow-media: var(--shadow-e3);              /* elevação do quadro — flutua sem competir com o preço */
+
+  /* TABELA MULTI-PLANO (#planos — Brief V2 §5). "Mais popular" = destaque por
+     COMPOSIÇÃO de tokens (sem cor nova): window + anel latão + elevação e4 + tint
+     latão discreto. Check dourado = text-accent (IconCheck). Preços = tabular-nums. */
+  --plan-popular-ring: var(--accent);            /* anel do tier destacado (ring-accent) */
+  --plan-popular-shadow: var(--shadow-e4);       /* eleva o tier destacado acima dos demais */
+  --plan-popular-tint: var(--accent);            /* fundo discreto via alpha: bg-accent/8 */
+
+  /* z-index nomeado, totalmente ordenado — zero z-index inline */
+  --z-rail: 40;
+  --z-badge: 45;
+  --z-nav: 50;         /* header sticky */
+  --z-hud: 55;
+  --z-sticky-cta: 60;  /* .cta-bar fixa mobile */
+  --z-cursor: 90;
+  --z-modal: 95;       /* Radix Dialog (se usado) */
+  --z-preloader: 100;
+
+  /* ---- MOTION MICRO — MIRROR CSS do subconjunto micro do seat canônico.
+     Seat: lib/motion/motion-tokens.ts (DUR.micro/microIn · EASE.standard/dramatic).
+     Só o MICRO é espelhado como CSS var (transições de estado). reveal/hero/scrub/
+     stagger/parallax vivem NO SEAT e são consumidos pelo motion-engineer via GSAP —
+     não viram CSS var aqui (um dono só). Um valor, uma origem. */
+  --dur-micro: 0.22s;
+  --dur-micro-in: 0.28s;
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-dramatic: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* loop AMBIENTE — exceção deliberada ao "só micro vira var": a coreografia lê
+     --dur-loop via getComputedStyle p/ ligar o pulso "vivo" (lembrete WhatsApp) SEM
+     acoplar import ao seat. Enquanto esta var não existir, o loop fica inerte por
+     design. Mirror de DUR.loop (lib/motion/motion-tokens.ts). Um valor, uma origem. */
+  --dur-loop: 2.4s;
+}
+
+/* =============================================================================
+   SEMÂNTICOS — DARK (tema primário da LP). Papéis fechados; viram com data-theme.
+   Componente usa SEMPRE estes (bg-base, text-ink, border-line...), nunca o primitivo.
+   ============================================================================= */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --base: var(--espresso-950);
+  --surface: var(--espresso-900);
+  --surface-raised: var(--espresso-850);
+  --overlay: var(--espresso-950);        /* usado com alpha p/ scrim: bg-overlay/70 */
+
+  --ink: var(--bone-100);                /* texto primário   16.2:1 */
+  --ink-muted: var(--bone-300);          /* texto secundário  9.5:1 */
+  --ink-subtle: var(--bone-400);         /* label mono         5.9:1 */
+
+  --line: var(--espresso-800);           /* divisória decorativa (sem requisito) */
+  --line-strong: var(--espresso-600);    /* borda de campo/controle  ≥3:1 */
+
+  --accent: var(--brass-400);            /* latão — fill e texto (8.2:1 no base) */
+  --accent-ink: var(--espresso-950);     /* texto/ícone sobre fill accent  8.2:1 */
+  --accent-quiet: var(--brass-400);      /* usar com alpha p/ tint: bg-accent-quiet/15 */
+
+  --success: var(--green-300);           /* 9.0:1 */
+  --success-ink: var(--espresso-950);
+  --warning: var(--amber-300);           /* 10.2:1 */
+  --warning-ink: var(--espresso-950);
+  --danger: var(--rust-300);             /* 7.3:1 — borda/texto de erro do field */
+  --danger-ink: var(--espresso-950);
+  --info: var(--steel-300);              /* 8.3:1 */
+  --info-ink: var(--espresso-950);
+
+  /* sombras por elevação — preto quente, monotônicas com z */
+  --shadow-e1: 0 1px 2px rgb(0 0 0 / 0.40);
+  --shadow-e2: 0 2px 6px rgb(0 0 0 / 0.45);
+  --shadow-e3: 0 8px 20px -4px rgb(0 0 0 / 0.55);
+  --shadow-e4: 0 16px 36px -8px rgb(0 0 0 / 0.62);
+  --shadow-e5: 0 28px 64px -12px rgb(0 0 0 / 0.70);
+}
+
+/* =============================================================================
+   SEAM P5 — cor de TEMA do preview #modelos (XIA-115). A cor veste SÓ o accent do
+   PREVIEW (wordmark + fundo do CTA "Agendar horário"), NUNCA o chrome da LP.
+   Troca é SÓ por token: ui-engineer seta `data-preview-theme` no container
+   [data-modelo-preview]; motion-engineer anima via `transition-colors` já existente
+   (motion-reduce desliga) → CLS 0, sem novo layout. Default (sem atributo) = brass.
+   --preview-accent-ink é UNIFORME (--espresso-950): o CTA é fundo bright em ambos os
+   temas, então o par ink↔cor é theme-independente (7.5–9.8:1, ver prova no rodapé).
+   NOTA: os tons são provados sobre a SURFACE DARK do preview (tema de produção). Se
+   a LP algum dia rodar data-theme="light", o wordmark-como-cor sobre bone claro
+   precisa ser re-derivado — fora do escopo atual (LP entrega dark-primária).
+   ============================================================================= */
+[data-modelo-preview] {
+  --preview-accent: var(--theme-brass);
+  --preview-accent-ink: var(--espresso-950);
+}
+[data-modelo-preview][data-preview-theme="brass"] { --preview-accent: var(--theme-brass); }
+[data-modelo-preview][data-preview-theme="cobre"] { --preview-accent: var(--theme-cobre); }
+[data-modelo-preview][data-preview-theme="sage"]  { --preview-accent: var(--theme-sage); }
+[data-modelo-preview][data-preview-theme="azure"] { --preview-accent: var(--theme-azure); }
+[data-modelo-preview][data-preview-theme="malva"] { --preview-accent: var(--theme-malva); }
+
+/* Swatch do 2º radiogroup (cor do tema · P5) — o fill de cada chip é EXATAMENTE a
+   mesma cor de tema do preview (data-swatch-theme = data-preview-theme). Puro token/
+   CSS, sem JS de cor no picker (evita inline style). */
+[data-swatch-theme="brass"] { background-color: rgb(var(--theme-brass)); }
+[data-swatch-theme="cobre"] { background-color: rgb(var(--theme-cobre)); }
+[data-swatch-theme="sage"]  { background-color: rgb(var(--theme-sage)); }
+[data-swatch-theme="azure"] { background-color: rgb(var(--theme-azure)); }
+[data-swatch-theme="malva"] { background-color: rgb(var(--theme-malva)); }
+
+/* =============================================================================
+   SEMÂNTICOS — LIGHT (secundário, data-theme="light"). Papel idêntico, valor virado.
+   Troca de mapa por data-theme; NUNCA cor duplicada por tema dentro do componente.
+   ============================================================================= */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --base: var(--bone-100);
+  --surface: var(--bone-50);
+  --surface-raised: var(--bone-25);
+  --overlay: var(--bone-900);
+
+  --ink: var(--bone-900);                /* 14.3:1 */
+  --ink-muted: var(--bone-600);          /*  6.6:1 */
+  --ink-subtle: var(--bone-500);         /*  5.1:1 */
+
+  --line: var(--bone-200);
+  --line-strong: var(--espresso-500);    /* ≥3:1 em base e surface */
+
+  --accent: var(--brass-700);            /* latão profundo — 5.0:1 no base */
+  --accent-ink: var(--bone-100);         /* texto sobre fill accent  5.0:1 */
+  --accent-quiet: var(--brass-700);
+
+  --success: var(--green-700);           /* 5.5:1 */
+  --success-ink: var(--bone-100);
+  --warning: var(--amber-800);           /* 5.8:1 */
+  --warning-ink: var(--bone-100);
+  --danger: var(--rust-700);             /* 5.7:1 */
+  --danger-ink: var(--bone-100);
+  --info: var(--steel-700);              /* 6.1:1 */
+  --info-ink: var(--bone-100);
+
+  --shadow-e1: 0 1px 2px rgb(35 28 20 / 0.08);
+  --shadow-e2: 0 2px 6px rgb(35 28 20 / 0.10);
+  --shadow-e3: 0 8px 20px -4px rgb(35 28 20 / 0.14);
+  --shadow-e4: 0 16px 36px -8px rgb(35 28 20 / 0.18);
+  --shadow-e5: 0 28px 64px -12px rgb(35 28 20 / 0.22);
+}
+
+/* =============================================================================
+   PROVA DE CONTRASTE (WCAG 2.2 AA) — validada em código, ambos os temas.
+   Texto ≥4.5:1 · UI/texto-grande/foco ≥3:1.  ✅ = passa.
+   DARK  : ink 16.2 · ink-muted 9.5 · ink-subtle 5.9 · accent(texto) 8.2 ·
+           accent-ink/accent 8.2 · line-strong/surface 3.4 · foco(accent) 8.2 ·
+           success 9.0 · warning 10.2 · danger 7.3 · info 8.3
+   LIGHT : ink 14.3 · ink-muted 6.6 · ink-subtle 5.1 · accent 5.0 ·
+           accent-ink/accent 5.0 · line-strong/surface 3.9 · foco(accent) 5.0 ·
+           success 5.5 · warning 5.8 · danger 5.7 · info 6.1
+
+   PARES NOVOS V2 — fundo = surface-raised (moldura da galeria + card de plano
+   destacado). Validados em código (harness qa/contrast-check.mjs):
+   DARK (bg surface-raised) : ink 13.9 · ink-muted 8.2 · ink-subtle 5.2 (label 16:9) ·
+           accent 7.1 (check dourado / anel "mais popular") · line-strong 3.1 (borda média) ✅
+   LIGHT (bg surface-raised): ink 16.6 · ink-muted 7.6 · ink-subtle 5.9 (label 16:9) ·
+           accent 5.8 (check / anel) · line-strong 4.1 (borda média) ✅
+
+   CORES DE TEMA DO PREVIEW #modelos (P5 · XIA-115) — conjunto FECHADO, provado em
+   código (harness qa/xia115-theme-contrast.mjs). Superfícies DARK do preview:
+   surface #1C1815, ink-sobre-cor = espresso-950 #14110E. Alvo: texto ≥4.5:1.
+     tema    texto/surface   fundo-CTA(ink950/cor)   veredito
+     brass   7.67:1          8.19:1                  ✅ (default)
+     cobre   7.08:1          7.55:1                  ✅
+     sage    9.17:1          9.78:1                  ✅
+     azure   8.33:1          8.89:1                  ✅
+     malva   7.59:1          8.10:1                  ✅
+   Todos ≥4.5:1 nos DOIS usos (mín. 7.08:1) em ambas as superfícies do preview
+   (raised ≥6.35:1). a11y = gate no TOKEN, não achado de QA.
+   ============================================================================= */

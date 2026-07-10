@@ -1,0 +1,26 @@
+# deps
+node_modules/
+
+# next
+.next/
+out/
+next-env.d.ts
+
+# vercel
+.vercel/
+
+# os
+.DS_Store
+
+# secrets — nunca commitar
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+secrets/
+
+# logs
+*.log
+npm-debug.log*

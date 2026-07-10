@@ -1,0 +1,36 @@
+[
+  {
+    "label": "01-default-desktop",
+    "count": 1,
+    "maxImpact": "serious",
+    "ids": [
+      "color-contrast(5)"
+    ]
+  },
+  {
+    "label": "02-faq-open",
+    "count": 0,
+    "maxImpact": "—",
+    "ids": []
+  },
+  {
+    "label": "03-form-invalid-submit",
+    "count": 1,
+    "maxImpact": "serious",
+    "ids": [
+      "color-contrast(12)"
+    ]
+  },
+  {
+    "label": "04-mobile-default",
+    "count": 0,
+    "maxImpact": "—",
+    "ids": []
+  },
+  {
+    "label": "05-reduced-motion",
+    "count": 0,
+    "maxImpact": "—",
+    "ids": []
+  }
+]

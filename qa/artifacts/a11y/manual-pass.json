@@ -1,0 +1,132 @@
+[
+  {
+    "firstFocusable(skip-link)": {
+      "tag": "A",
+      "text": "Pular para o conteúdo",
+      "href": "#conteudo",
+      "onScreen": false,
+      "outline": "solid",
+      "outlineWidth": "2px"
+    }
+  },
+  {
+    "tabStops": 22
+  },
+  {
+    "tabOrderSample": [
+      {
+        "tag": "A",
+        "label": "Pular para o conteúdo",
+        "hasFocusRing": true,
+        "tabindex": null
+      },
+      {
+        "tag": "A",
+        "label": "Xbarber",
+        "hasFocusRing": true,
+        "tabindex": null
+      },
+      {
+        "tag": "A",
+        "label": "Como funciona",
+        "hasFocusRing": true,
+        "tabindex": null
+      },
+      {
+        "tag": "A",
+        "label": "Preço",
+        "hasFocusRing": true,
+        "tabindex": null
+      },
+      {
+        "tag": "A",
+        "label": "Dúvidas",
+        "hasFocusRing": true,
+        "tabindex": null
+      },
+      {
+        "tag": "A",
+        "label": "Entrar",
+        "hasFocusRing": true,
+        "tabindex": null
+      },
+      {
+        "tag": "A",
+        "label": "Começar teste grátis ▸",
+        "hasFocusRing": true,
+        "tabindex": null
+      },
+      {
+        "tag": "INPUT",
+        "label": "",
+        "hasFocusRing": true,
+        "tabindex": null
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Começar teste grátis ▸",
+        "hasFocusRing": true,
+        "tabindex": null
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Mensal",
+        "hasFocusRing": true,
+        "tabindex": "0"
+      },
+      {
+        "tag": "A",
+        "label": "Começar teste grátis ▸",
+        "hasFocusRing": true,
+        "tabindex": null
+      },
+      {
+        "tag": "A",
+        "label": "Começar teste grátis ▸",
+        "hasFocusRing": true,
+        "tabindex": null
+      },
+      {
+        "tag": "A",
+        "label": "Começar teste grátis ▸",
+        "hasFocusRing": true,
+        "tabindex": null
+      },
+      {
+        "tag": "A",
+        "label": "Começar teste grátis ▸",
+        "hasFocusRing": true,
+        "tabindex": null
+      }
+    ]
+  },
+  {
+    "positiveTabindex": []
+  },
+  {
+    "focusStopsWithoutVisibleRing": []
+  },
+  {
+    "faqEnterOpens(aria-expanded)": "true"
+  },
+  {
+    "faqEnterCloses(aria-expanded)": "false"
+  },
+  {
+    "reflow320(1.4.10)": {
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "overflowX": 0,
+      "pass": true
+    }
+  },
+  {
+    "text200(1.4.4)": {
+      "overflowX": 95,
+      "pass": false
+    }
+  },
+  {
+    "grayscaleShot": "grayscale-full.png (revisão visual: nav ativo, erro, links carregam texto/forma além de cor)"
+  }
+]

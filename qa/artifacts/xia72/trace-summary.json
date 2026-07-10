@@ -1,0 +1,68 @@
+{
+  "file": "A-desktop-1x-trace.json",
+  "totalEvents": 123682,
+  "counts": {
+    "UpdateLayoutTree": 569,
+    "Layout": 168,
+    "PrePaint": 522,
+    "Paint": 868,
+    "UpdateLayer": 6148,
+    "HitTest": 97,
+    "ScrollLayer": 356
+  },
+  "forcedSyncLayouts": 151,
+  "layoutMsTotal": 77,
+  "recalcMsTotal": 199,
+  "longTasks_gt50ms": 5
+}
+{
+  "file": "B-desktop-4x-trace.json",
+  "totalEvents": 111745,
+  "counts": {
+    "UpdateLayoutTree": 512,
+    "Layout": 138,
+    "PrePaint": 449,
+    "Paint": 687,
+    "UpdateLayer": 5350,
+    "HitTest": 100,
+    "ScrollLayer": 297
+  },
+  "forcedSyncLayouts": 123,
+  "layoutMsTotal": 302,
+  "recalcMsTotal": 947,
+  "longTasks_gt50ms": 49
+}
+{
+  "file": "C-mobile-4x-trace.json",
+  "totalEvents": 135497,
+  "counts": {
+    "UpdateLayoutTree": 594,
+    "Layout": 153,
+    "PrePaint": 639,
+    "Paint": 388,
+    "UpdateLayer": 3896,
+    "HitTest": 92,
+    "ScrollLayer": 380
+  },
+  "forcedSyncLayouts": 143,
+  "layoutMsTotal": 303,
+  "recalcMsTotal": 924,
+  "longTasks_gt50ms": 46
+}
+{
+  "file": "reduce-os-trace.json",
+  "totalEvents": 55865,
+  "counts": {
+    "UpdateLayoutTree": 41,
+    "Layout": 4,
+    "PrePaint": 490,
+    "Paint": 39,
+    "UpdateLayer": 160,
+    "HitTest": 86,
+    "ScrollLayer": 60
+  },
+  "forcedSyncLayouts": 2,
+  "layoutMsTotal": 20,
+  "recalcMsTotal": 51,
+  "longTasks_gt50ms": 0
+}

@@ -1,0 +1,98 @@
+{
+  "A": {
+    "tag": "A-desktop-1x",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "cpuRate": 1,
+    "fpsP95": 20,
+    "fpsMedian": 30,
+    "LCP": 208,
+    "CLS": 0.0226,
+    "INP": 48,
+    "diag": {
+      "reducedMatches": false,
+      "gsapLive": true,
+      "canvases": 0,
+      "markers": 0,
+      "pinSpacers": 0,
+      "heroH1": "AGENDA CHEIA. FALTA ZERO.",
+      "invisibleReveals": 0
+    },
+    "video": "/tmp/xiax-qa72/A-desktop-1x.webm",
+    "trace": "/tmp/xiax-qa72/A-desktop-1x-trace.json (35636KB)"
+  },
+  "B": {
+    "tag": "B-desktop-4x",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "cpuRate": 4,
+    "fpsP95": 15,
+    "fpsMedian": 30,
+    "LCP": 372,
+    "CLS": 0.0115,
+    "INP": 72,
+    "diag": {
+      "reducedMatches": false,
+      "gsapLive": true,
+      "canvases": 0,
+      "markers": 0,
+      "pinSpacers": 0,
+      "heroH1": "AGENDA CHEIA. FALTA ZERO.",
+      "invisibleReveals": 1
+    },
+    "video": "/tmp/xiax-qa72/B-desktop-4x.webm",
+    "trace": "/tmp/xiax-qa72/B-desktop-4x-trace.json (32592KB)"
+  },
+  "C": {
+    "tag": "C-mobile-4x",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "cpuRate": 4,
+    "fpsP95": 15,
+    "fpsMedian": 60,
+    "LCP": 360,
+    "CLS": 0.0123,
+    "INP": 56,
+    "diag": {
+      "reducedMatches": false,
+      "gsapLive": true,
+      "canvases": 0,
+      "markers": 0,
+      "pinSpacers": 0,
+      "heroH1": "AGENDA CHEIA. FALTA ZERO.",
+      "invisibleReveals": 7
+    },
+    "video": "/tmp/xiax-qa72/C-mobile-4x.webm",
+    "trace": "/tmp/xiax-qa72/C-mobile-4x-trace.json (39389KB)"
+  },
+  "reduceOS": {
+    "tag": "reduce-os",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "cpuRate": 1,
+    "fpsP95": 30,
+    "fpsMedian": 60,
+    "LCP": 200,
+    "CLS": 0,
+    "INP": 56,
+    "diag": {
+      "reducedMatches": true,
+      "gsapLive": true,
+      "canvases": 0,
+      "markers": 0,
+      "pinSpacers": 0,
+      "heroH1": "AGENDA CHEIA. FALTA ZERO.",
+      "invisibleReveals": 0
+    },
+    "video": "/tmp/xiax-qa72/reduce-os.webm",
+    "trace": "/tmp/xiax-qa72/reduce-os-trace.json (14762KB)"
+  }
+}

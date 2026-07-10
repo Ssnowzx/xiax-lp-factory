@@ -1,0 +1,98 @@
+{
+  "A": {
+    "tag": "A-desktop-1x",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "cpuRate": 1,
+    "fpsP95": 15,
+    "fpsMedian": 30,
+    "LCP": 228,
+    "CLS": 0.0207,
+    "INP": 64,
+    "diag": {
+      "reducedMatches": false,
+      "gsapLive": true,
+      "canvases": 0,
+      "markers": 0,
+      "pinSpacers": 0,
+      "heroH1": "AGENDA CHEIA. FALTA ZERO.",
+      "invisibleReveals": 0
+    },
+    "video": "qa/artifacts/xia85/adversarial/A-desktop-1x.webm",
+    "trace": "qa/artifacts/xia85/adversarial/A-desktop-1x-trace.json (33917KB)"
+  },
+  "B": {
+    "tag": "B-desktop-4x",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "cpuRate": 4,
+    "fpsP95": 10,
+    "fpsMedian": 20,
+    "LCP": 352,
+    "CLS": 0.0098,
+    "INP": 112,
+    "diag": {
+      "reducedMatches": false,
+      "gsapLive": true,
+      "canvases": 0,
+      "markers": 0,
+      "pinSpacers": 0,
+      "heroH1": "AGENDA CHEIA. FALTA ZERO.",
+      "invisibleReveals": 1
+    },
+    "video": "qa/artifacts/xia85/adversarial/B-desktop-4x.webm",
+    "trace": "qa/artifacts/xia85/adversarial/B-desktop-4x-trace.json (30408KB)"
+  },
+  "C": {
+    "tag": "C-mobile-4x",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "cpuRate": 4,
+    "fpsP95": 20,
+    "fpsMedian": 60,
+    "LCP": 520,
+    "CLS": 0.0165,
+    "INP": 48,
+    "diag": {
+      "reducedMatches": false,
+      "gsapLive": true,
+      "canvases": 0,
+      "markers": 0,
+      "pinSpacers": 0,
+      "heroH1": "AGENDA CHEIA. FALTA ZERO.",
+      "invisibleReveals": 7
+    },
+    "video": "qa/artifacts/xia85/adversarial/C-mobile-4x.webm",
+    "trace": "qa/artifacts/xia85/adversarial/C-mobile-4x-trace.json (40316KB)"
+  },
+  "reduceOS": {
+    "tag": "reduce-os",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "cpuRate": 1,
+    "fpsP95": 30,
+    "fpsMedian": 60,
+    "LCP": 188,
+    "CLS": 0,
+    "INP": 56,
+    "diag": {
+      "reducedMatches": true,
+      "gsapLive": true,
+      "canvases": 0,
+      "markers": 0,
+      "pinSpacers": 0,
+      "heroH1": "AGENDA CHEIA. FALTA ZERO.",
+      "invisibleReveals": 0
+    },
+    "video": "qa/artifacts/xia85/adversarial/reduce-os.webm",
+    "trace": "qa/artifacts/xia85/adversarial/reduce-os-trace.json (14595KB)"
+  }
+}

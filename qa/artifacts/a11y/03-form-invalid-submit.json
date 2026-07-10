@@ -1,0 +1,509 @@
+[
+  {
+    "id": "color-contrast",
+    "impact": "serious",
+    "tags": [
+      "cat.color",
+      "wcag2aa",
+      "wcag143",
+      "TTv5",
+      "TT13.c",
+      "EN-301-549",
+      "EN-9.1.4.3",
+      "ACT",
+      "RGAAv4",
+      "RGAA-3.2.1"
+    ],
+    "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+    "nodes": [
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#34312d",
+              "bgColor": "#161310",
+              "contrastRatio": 1.43,
+              "fontSize": "19.2pt (25.6px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "3:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<article data-plan=\"corte\" class=\"reveal-item relative flex flex-col rounded-window border p-6 border-line bg-surface-raised shadow-e2\" style=\"translate: none; rotate: none; scale: none; transform: translate3d(0px, 13.6706px, 0px); opacity: 0.1456; visibility: inherit;\">",
+                "target": [
+                  "article[data-plan=\"corte\"]"
+                ]
+              },
+              {
+                "html": "<body class=\"min-h-dvh bg-base font-sans text-ink antialiased\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 1.43 (foreground color: #34312d, background color: #161310, font size: 19.2pt (25.6px), font weight: normal). Expected contrast ratio of 3:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<h3 class=\"font-display text-title uppercase tracking-display-upper text-ink\">Corte</h3>",
+        "target": [
+          "article[data-plan=\"corte\"] > .text-title"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.43 (foreground color: #34312d, background color: #161310, font size: 19.2pt (25.6px), font weight: normal). Expected contrast ratio of 3:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#2e2924",
+              "bgColor": "#161310",
+              "contrastRatio": 1.28,
+              "fontSize": "11.6pt (15.504px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<article data-plan=\"corte\" class=\"reveal-item relative flex flex-col rounded-window border p-6 border-line bg-surface-raised shadow-e2\" style=\"translate: none; rotate: none; scale: none; transform: translate3d(0px, 13.6706px, 0px); opacity: 0.1456; visibility: inherit;\">",
+                "target": [
+                  "article[data-plan=\"corte\"]"
+                ]
+              },
+              {
+                "html": "<body class=\"min-h-dvh bg-base font-sans text-ink antialiased\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 1.28 (foreground color: #2e2924, background color: #161310, font size: 11.6pt (15.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<p class=\"mt-1 min-h-[2.4em] text-body text-ink-muted\">Pra quem quer parar de perder horário agora</p>",
+        "target": [
+          "article[data-plan=\"corte\"] > .min-h-\\[2\\.4em\\].mt-1.text-ink-muted"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.28 (foreground color: #2e2924, background color: #161310, font size: 11.6pt (15.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#34312d",
+              "bgColor": "#161310",
+              "contrastRatio": 1.43,
+              "fontSize": "39.0pt (52px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "3:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<article data-plan=\"corte\" class=\"reveal-item relative flex flex-col rounded-window border p-6 border-line bg-surface-raised shadow-e2\" style=\"translate: none; rotate: none; scale: none; transform: translate3d(0px, 13.6706px, 0px); opacity: 0.1456; visibility: inherit;\">",
+                "target": [
+                  "article[data-plan=\"corte\"]"
+                ]
+              },
+              {
+                "html": "<body class=\"min-h-dvh bg-base font-sans text-ink antialiased\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 1.43 (foreground color: #34312d, background color: #161310, font size: 39.0pt (52px), font weight: normal). Expected contrast ratio of 3:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<span data-price=\"true\" class=\"font-display text-display-lg leading-none tabular-nums text-ink\">R$&nbsp;98,90</span>",
+        "target": [
+          "article[data-plan=\"corte\"] > .items-end.mt-5.gap-1\\.5 > .leading-none.text-display-lg[data-price=\"true\"]"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.43 (foreground color: #34312d, background color: #161310, font size: 39.0pt (52px), font weight: normal). Expected contrast ratio of 3:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#28231e",
+              "bgColor": "#161310",
+              "contrastRatio": 1.18,
+              "fontSize": "8.6pt (11.504px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<article data-plan=\"corte\" class=\"reveal-item relative flex flex-col rounded-window border p-6 border-line bg-surface-raised shadow-e2\" style=\"translate: none; rotate: none; scale: none; transform: translate3d(0px, 13.6706px, 0px); opacity: 0.1456; visibility: inherit;\">",
+                "target": [
+                  "article[data-plan=\"corte\"]"
+                ]
+              },
+              {
+                "html": "<body class=\"min-h-dvh bg-base font-sans text-ink antialiased\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 1.18 (foreground color: #28231e, background color: #161310, font size: 8.6pt (11.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<span class=\"pb-1 font-mono text-label uppercase tracking-label text-ink-subtle\">/mês</span>",
+        "target": [
+          "article[data-plan=\"corte\"] > .items-end.mt-5.gap-1\\.5 > .pb-1.text-ink-subtle.tracking-label"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.18 (foreground color: #28231e, background color: #161310, font size: 8.6pt (11.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#302617",
+              "bgColor": "#1a1611",
+              "contrastRatio": 1.21,
+              "fontSize": "8.6pt (11.504px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<p class=\"mt-4 inline-flex w-fit items-center gap-1.5 rounded-pill bg-accent-quiet/15 px-3 py-1 font-mono text-label uppercase tracking-label text-accent\">Barbeiros ilimitados</p>",
+                "target": [
+                  "article[data-plan=\"corte\"] > .w-fit.bg-accent-quiet\\/15.mt-4"
+                ]
+              },
+              {
+                "html": "<article data-plan=\"corte\" class=\"reveal-item relative flex flex-col rounded-window border p-6 border-line bg-surface-raised shadow-e2\" style=\"translate: none; rotate: none; scale: none; transform: translate3d(0px, 13.6706px, 0px); opacity: 0.1456; visibility: inherit;\">",
+                "target": [
+                  "article[data-plan=\"corte\"]"
+                ]
+              },
+              {
+                "html": "<body class=\"min-h-dvh bg-base font-sans text-ink antialiased\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 1.21 (foreground color: #302617, background color: #1a1611, font size: 8.6pt (11.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<p class=\"mt-4 inline-flex w-fit items-center gap-1.5 rounded-pill bg-accent-quiet/15 px-3 py-1 font-mono text-label uppercase tracking-label text-accent\">Barbeiros ilimitados</p>",
+        "target": [
+          "article[data-plan=\"corte\"] > .w-fit.bg-accent-quiet\\/15.mt-4"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.21 (foreground color: #302617, background color: #1a1611, font size: 8.6pt (11.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#2e2924",
+              "bgColor": "#161310",
+              "contrastRatio": 1.28,
+              "fontSize": "11.6pt (15.504px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<article data-plan=\"corte\" class=\"reveal-item relative flex flex-col rounded-window border p-6 border-line bg-surface-raised shadow-e2\" style=\"translate: none; rotate: none; scale: none; transform: translate3d(0px, 13.6706px, 0px); opacity: 0.1456; visibility: inherit;\">",
+                "target": [
+                  "article[data-plan=\"corte\"]"
+                ]
+              },
+              {
+                "html": "<body class=\"min-h-dvh bg-base font-sans text-ink antialiased\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 1.28 (foreground color: #2e2924, background color: #161310, font size: 11.6pt (15.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<span>Agenda online única (todos os barbeiros)</span>",
+        "target": [
+          "article[data-plan=\"corte\"] > ul > .items-start.gap-2\\.5:nth-child(1) > span"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.28 (foreground color: #2e2924, background color: #161310, font size: 11.6pt (15.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#2e2924",
+              "bgColor": "#161310",
+              "contrastRatio": 1.28,
+              "fontSize": "11.6pt (15.504px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<article data-plan=\"corte\" class=\"reveal-item relative flex flex-col rounded-window border p-6 border-line bg-surface-raised shadow-e2\" style=\"translate: none; rotate: none; scale: none; transform: translate3d(0px, 13.6706px, 0px); opacity: 0.1456; visibility: inherit;\">",
+                "target": [
+                  "article[data-plan=\"corte\"]"
+                ]
+              },
+              {
+                "html": "<body class=\"min-h-dvh bg-base font-sans text-ink antialiased\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 1.28 (foreground color: #2e2924, background color: #161310, font size: 11.6pt (15.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<span>Lembrete automático no WhatsApp 24h antes</span>",
+        "target": [
+          "article[data-plan=\"corte\"] > ul > .items-start.gap-2\\.5:nth-child(2) > span"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.28 (foreground color: #2e2924, background color: #161310, font size: 11.6pt (15.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#2e2924",
+              "bgColor": "#161310",
+              "contrastRatio": 1.28,
+              "fontSize": "11.6pt (15.504px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<article data-plan=\"corte\" class=\"reveal-item relative flex flex-col rounded-window border p-6 border-line bg-surface-raised shadow-e2\" style=\"translate: none; rotate: none; scale: none; transform: translate3d(0px, 13.6706px, 0px); opacity: 0.1456; visibility: inherit;\">",
+                "target": [
+                  "article[data-plan=\"corte\"]"
+                ]
+              },
+              {
+                "html": "<body class=\"min-h-dvh bg-base font-sans text-ink antialiased\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 1.28 (foreground color: #2e2924, background color: #161310, font size: 11.6pt (15.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<span>Página de agendamento própria</span>",
+        "target": [
+          "article[data-plan=\"corte\"] > ul > .items-start.gap-2\\.5:nth-child(3) > span"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.28 (foreground color: #2e2924, background color: #161310, font size: 11.6pt (15.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#2e2924",
+              "bgColor": "#161310",
+              "contrastRatio": 1.28,
+              "fontSize": "11.6pt (15.504px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<article data-plan=\"corte\" class=\"reveal-item relative flex flex-col rounded-window border p-6 border-line bg-surface-raised shadow-e2\" style=\"translate: none; rotate: none; scale: none; transform: translate3d(0px, 13.6706px, 0px); opacity: 0.1456; visibility: inherit;\">",
+                "target": [
+                  "article[data-plan=\"corte\"]"
+                ]
+              },
+              {
+                "html": "<body class=\"min-h-dvh bg-base font-sans text-ink antialiased\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 1.28 (foreground color: #2e2924, background color: #161310, font size: 11.6pt (15.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<span>Barbeiros ilimitados</span>",
+        "target": [
+          "article[data-plan=\"corte\"] > ul > .items-start.gap-2\\.5:nth-child(4) > span"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.28 (foreground color: #2e2924, background color: #161310, font size: 11.6pt (15.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#2e2924",
+              "bgColor": "#161310",
+              "contrastRatio": 1.28,
+              "fontSize": "11.6pt (15.504px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<article data-plan=\"corte\" class=\"reveal-item relative flex flex-col rounded-window border p-6 border-line bg-surface-raised shadow-e2\" style=\"translate: none; rotate: none; scale: none; transform: translate3d(0px, 13.6706px, 0px); opacity: 0.1456; visibility: inherit;\">",
+                "target": [
+                  "article[data-plan=\"corte\"]"
+                ]
+              },
+              {
+                "html": "<body class=\"min-h-dvh bg-base font-sans text-ink antialiased\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 1.28 (foreground color: #2e2924, background color: #161310, font size: 11.6pt (15.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<span>Cancele quando quiser</span>",
+        "target": [
+          "article[data-plan=\"corte\"] > ul > .items-start.gap-2\\.5:nth-child(5) > span"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.28 (foreground color: #2e2924, background color: #161310, font size: 11.6pt (15.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#34312d",
+              "bgColor": "#161310",
+              "contrastRatio": 1.43,
+              "fontSize": "8.6pt (11.504px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<article data-plan=\"corte\" class=\"reveal-item relative flex flex-col rounded-window border p-6 border-line bg-surface-raised shadow-e2\" style=\"translate: none; rotate: none; scale: none; transform: translate3d(0px, 13.6706px, 0px); opacity: 0.1456; visibility: inherit;\">",
+                "target": [
+                  "article[data-plan=\"corte\"]"
+                ]
+              },
+              {
+                "html": "<body class=\"min-h-dvh bg-base font-sans text-ink antialiased\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 1.43 (foreground color: #34312d, background color: #161310, font size: 8.6pt (11.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<a href=\"#planos-form\" class=\"inline-flex items-ce...\">",
+        "target": [
+          "article[data-plan=\"corte\"] > .mt-7 > .hover\\:bg-surface.whitespace-nowrap[href$=\"#planos-form\"]"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.43 (foreground color: #34312d, background color: #161310, font size: 8.6pt (11.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#28231e",
+              "bgColor": "#161310",
+              "contrastRatio": 1.18,
+              "fontSize": "8.6pt (11.504px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<article data-plan=\"corte\" class=\"reveal-item relative flex flex-col rounded-window border p-6 border-line bg-surface-raised shadow-e2\" style=\"translate: none; rotate: none; scale: none; transform: translate3d(0px, 13.6706px, 0px); opacity: 0.1456; visibility: inherit;\">",
+                "target": [
+                  "article[data-plan=\"corte\"]"
+                ]
+              },
+              {
+                "html": "<body class=\"min-h-dvh bg-base font-sans text-ink antialiased\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 1.18 (foreground color: #28231e, background color: #161310, font size: 8.6pt (11.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<p class=\"mt-3 text-center font-mono text-label uppercase tracking-label text-ink-subtle\">14 dias grátis · sem cartão · cancele quando quiser</p>",
+        "target": [
+          "article[data-plan=\"corte\"] > .mt-7 > .mt-3.text-center.text-ink-subtle"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.18 (foreground color: #28231e, background color: #161310, font size: 8.6pt (11.504px), font weight: normal). Expected contrast ratio of 4.5:1"
+      }
+    ]
+  }
+]

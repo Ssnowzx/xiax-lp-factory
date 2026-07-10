@@ -1,0 +1,59 @@
+{
+  "noJS": {
+    "hero": {
+      "ok": true,
+      "text": "AGENDA CHEIA. FALTA ZERO.",
+      "opacity": "1"
+    },
+    "stuckInView": 0,
+    "verdict": "PASS"
+  },
+  "libsBlocked": {
+    "hero": {
+      "ok": true,
+      "text": "AGENDA CHEIA. FALTA ZERO.",
+      "opacity": "1"
+    },
+    "cls": {
+      "gsapLive": true,
+      "animReady": true
+    },
+    "stuckInView": 0,
+    "verdict": "PASS"
+  },
+  "reducedFlag": {
+    "hero": {
+      "ok": true,
+      "text": "AGENDA CHEIA. FALTA ZERO.",
+      "opacity": "1"
+    },
+    "stuckInView": 0,
+    "gsapLive": true,
+    "verdict": "PASS"
+  },
+  "preHydrationScroll": {
+    "hero": {
+      "ok": true,
+      "text": "AGENDA CHEIA. FALTA ZERO.",
+      "opacity": "1"
+    },
+    "stuckAtBottom": 0,
+    "stuckAtTop": 0,
+    "verdict": "PASS"
+  },
+  "resizeMidScroll": {
+    "stuckInView": 0,
+    "pinSpacers": 0,
+    "verdict": "PASS"
+  },
+  "backgroundTab": {
+    "stuckInView": 0,
+    "heroReachable": true,
+    "verdict": "PASS"
+  },
+  "refreshMidPage": {
+    "stuckInView": 0,
+    "restoredScrollY": 4115,
+    "verdict": "PASS"
+  }
+}

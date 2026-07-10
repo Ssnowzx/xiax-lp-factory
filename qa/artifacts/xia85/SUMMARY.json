@@ -1,0 +1,113 @@
+{
+  "commit": "d2671d7",
+  "date": "2026-07-09",
+  "fpsClean": [
+    {
+      "cell": "A desktop 1x",
+      "fpsP95": 60,
+      "fpsP99": 60,
+      "pctLong": 0,
+      "stuckAtBottom": 0
+    },
+    {
+      "cell": "B desktop 4x",
+      "fpsP95": 60,
+      "fpsP99": 60,
+      "pctLong": 0,
+      "stuckAtBottom": 0
+    },
+    {
+      "cell": "C mobile 4x",
+      "fpsP95": 60,
+      "fpsP99": 60,
+      "pctLong": 0,
+      "stuckAtBottom": 0
+    }
+  ],
+  "vitals": [
+    {
+      "cell": "A-desktop-1x",
+      "LCP": 228,
+      "CLS": 0.0207,
+      "INP": 64
+    },
+    {
+      "cell": "B-desktop-4x",
+      "LCP": 352,
+      "CLS": 0.0098,
+      "INP": 112
+    },
+    {
+      "cell": "C-mobile-4x",
+      "LCP": 520,
+      "CLS": 0.0165,
+      "INP": 48
+    }
+  ],
+  "heroFlash": {
+    "cpu1x": {
+      "painted_t": 76,
+      "dropped_t": 243,
+      "flashWindowMs": 167,
+      "peakSubBeforeGsapLive": 1,
+      "flashDetected": true,
+      "lcpEl": "H1.text-balance"
+    },
+    "cpu4x": {
+      "painted_t": 81,
+      "dropped_t": 1380,
+      "flashWindowMs": 1299,
+      "flashDetected": true
+    }
+  },
+  "lighthouse": {
+    "desktop": {
+      "runs": [
+        {
+          "perf": 100,
+          "lcp": 585,
+          "cls": 0,
+          "tbt": 25
+        },
+        {
+          "perf": 100,
+          "lcp": 639,
+          "cls": 0,
+          "tbt": 31
+        },
+        {
+          "perf": 100,
+          "lcp": 641,
+          "cls": 0,
+          "tbt": 47
+        }
+      ],
+      "medianPerf": 100,
+      "medianLCP": 639
+    },
+    "mobile": {
+      "runs": [
+        {
+          "perf": 84,
+          "lcp": 2757,
+          "cls": 0,
+          "tbt": 463
+        },
+        {
+          "perf": 97,
+          "lcp": 2283,
+          "cls": 0,
+          "tbt": 125
+        },
+        {
+          "perf": 96,
+          "lcp": 2652,
+          "cls": 0,
+          "tbt": 107
+        }
+      ],
+      "medianPerf": 96,
+      "medianLCP": 2652
+    }
+  }
+}

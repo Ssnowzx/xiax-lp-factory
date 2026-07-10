@@ -1,0 +1,3 @@
+{"label":"desktop 1x","viewport":{"width":1440,"height":900},"cpuRate":1,"lcp":164,"cls":0,"inp":40,"interactions":196,"p75event":32}
+{"label":"mobile Pixel7 4x","viewport":{"width":390,"height":844},"cpuRate":4,"lcp":244,"cls":0,"inp":104,"interactions":156,"p75event":24}
+DONE
