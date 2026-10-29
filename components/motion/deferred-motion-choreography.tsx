@@ -1,7 +1,9 @@
 "use client";
 
 import { useAfterPaint } from "@/lib/motion/use-after-paint";
+import { DepthController } from "@/components/motion/depth-controller";
 import { MotionChoreography } from "@/components/motion/motion-choreography";
+import { ScissorsStage } from "@/components/motion/scissors-stage";
 
 /**
  * GATE de agendamento do assento (Front-end Architect) — Perf XIA-76.
@@ -19,5 +21,13 @@ import { MotionChoreography } from "@/components/motion/motion-choreography";
 export function DeferredMotionChoreography() {
   const afterPaint = useAfterPaint();
   if (!afterPaint) return null;
-  return <MotionChoreography />;
+  return (
+    <>
+      <MotionChoreography />
+      {/* v3 depth cards: same after-paint gate, own reduced-motion gate. */}
+      <DepthController />
+      {/* v3 3D scissors: rail + canvas; three.js itself loads later, on idle. */}
+      <ScissorsStage />
+    </>
+  );
 }

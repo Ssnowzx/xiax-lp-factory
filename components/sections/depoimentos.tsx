@@ -23,7 +23,7 @@ export function Depoimentos() {
       <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between md:gap-8">
         <div>
           <Kicker className="mb-3">Prova social</Kicker>
-          <h2 className="font-display text-display-lg uppercase tracking-display-upper text-ink">
+          <h2 className="font-display text-display-lg type-display text-ink">
             O que os donos falam.
           </h2>
         </div>
@@ -62,7 +62,7 @@ export function Depoimentos() {
                   aria-hidden="true"
                   className="size-10 shrink-0 rounded-pill border border-dashed border-line"
                 />
-                <p className="font-mono text-label uppercase tracking-label text-ink-subtle">
+                <p className="font-mono text-label uppercase leading-normal tracking-label text-ink-subtle">
                   [Depoimento pendente — nome, barbearia, cidade]
                 </p>
               </div>
@@ -71,7 +71,7 @@ export function Depoimentos() {
         ))}
       </ul>
 
-      <p className="mt-6 font-mono text-label uppercase tracking-label text-ink-subtle">
+      <p className="mt-6 font-mono text-label uppercase leading-normal tracking-label text-ink-subtle">
         Placeholder da página de teste — depoimentos, logos e números reais entram antes de
         publicar. Nada aqui é inventado.
       </p>

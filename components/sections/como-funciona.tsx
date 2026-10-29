@@ -1,77 +1,98 @@
+import type { StepContent, StepsContent } from "@/lib/content/types";
+
 import { Section } from "@/components/ui/section";
 import { Kicker } from "@/components/ui/kicker";
 import { Reveal } from "@/components/motion/reveal";
-import { RoughTarget } from "@/components/motion/rough-target";
-import { HandwrittenNote } from "@/components/ui/handwritten-note";
-import type { RoughAnnotationType } from "@/lib/motion/rough-notation-plan";
+import { StepVisual } from "@/components/ui/step-visuals";
+import { stillCssHeight } from "@/lib/motion/still-frame";
+import { SWEEP_TOOLS } from "@/lib/motion/sweep-tool";
 
-// #como-funciona — job: PROVA/MECANISMO. Decisão única (§3.3): os 3 passos são um TRILHO
-// ÚNICO — numerais gravados em latão conectados por uma HAIRLINE que lê como a listra do
-// poste, NÃO 3 cards soltos (anti-slop explícito). F-pattern: front-load nos 2 primeiros
-// termos. Passos = <h3> (h1→h2→h3 sem pular nível). Seção em bg-surface (leve elevação).
-//
-// WS3 (XIA-95): a lista numerada ganha 1 marca rough por item (paleta circle/underline/box).
-// Copy CONGELADA — `pre`+`mark`+`post` só ISOLAM a palavra-alvo p/ o `<RoughTarget>` a
-// envolver; o texto renderizado é idêntico ao V1. O passo automatizado (3) usa `underline`
-// + a nota manuscrita "← com IA" (Ref.2 do Brief), explicitando a autoria por IA.
-type Step = {
-  n: string;
-  pre: string;
-  mark: string;
-  type: RoughAnnotationType;
-  note: number;
-  post: string;
-  t: string;
-  ai?: boolean;
-};
-const STEPS: Step[] = [
-  { n: "1", pre: "O cliente agenda ", mark: "sozinho", type: "circle", note: 4, post: "", t: " na sua página, sem te chamar no WhatsApp." },
-  { n: "2", pre: "Tudo cai ", mark: "numa agenda só", type: "box", note: 5, post: "", t: " — todos os barbeiros, num lugar só." },
-  { n: "3", pre: "O sistema manda o ", mark: "lembrete", type: "underline", note: 6, post: "", t: " no WhatsApp 24h antes.", ai: true },
-];
+// #como-funciona — job: PROVA/MECANISMO. v3 (xiax-lp-v3-cards-25d · design D12): the three
+// steps are depth cards on the leather, strung on a brass thread through numbered
+// medallions. v4 (xiax-lp-v4-xchair · D3): each card shows a cut of the REAL app screen
+// (time choice → day agenda → confirmation + the real day-before WhatsApp reminder), with
+// the same one-shot story played over it. The thread is horizontal ≥md and vertical when the cards stack; it runs
+// behind the opaque cards, so it only shows between them. Steps = <h3> (h1→h2→h3).
+// xiax-lp-v3-razor-3d (design D1/D7/D8): the 3D razor makes the heading's cut once, along
+// the horizontal thread (≥md) or, on a phone, along a hairline under the heading; under
+// reduced motion its still lies on the end of that line. ≥md the steps sit a fixed 80 px
+// below the heading (not the vh-based block gap) so the hovering razor clears both.
+// xiax-lp-v5-salon (design D7): the content names the line's tool (`sweepTool`: the razor here,
+// the round brush on the salon page); `data-sweep-tool` hands it to the stage, which fetches
+// only that tool's model and still.
 
-export function ComoFunciona() {
+function StepCard({ step, n }: { step: StepContent; n: number }) {
   return (
-    <Section id="como-funciona" className="bg-surface">
+    <li className="reveal-item relative flex flex-col">
+      <span className="relative z-rail flex size-12 items-center justify-center rounded-full border border-accent/60 bg-surface-raised font-display text-title leading-none text-accent shadow-e2 tabular-nums">
+        {n}
+      </span>
+      <div data-depth-card className="mt-5 flex-1">
+        <div
+          data-depth-stage
+          className="flex h-full flex-col gap-5 rounded-surface border border-line bg-surface-raised p-4 shadow-e2 md:flex-row md:items-center md:gap-8 md:p-5 lg:flex-col lg:items-stretch lg:gap-5"
+        >
+          {/* Tablet: the screen beside the text, so a cut is never squeezed to a third column. */}
+          <div data-depth-pass className="md:w-[46%] md:shrink-0 lg:w-full">
+            <StepVisual spec={step.visual} />
+          </div>
+          <h3 className="text-title text-ink">
+            {step.lead}
+            <span className="text-ink-muted">{step.rest}</span>
+          </h3>
+          <span data-depth-sheen aria-hidden="true">
+            <span />
+          </span>
+        </div>
+      </div>
+    </li>
+  );
+}
+
+export function ComoFunciona({ content }: { content: StepsContent }) {
+  const tool = SWEEP_TOOLS[content.sweepTool];
+  return (
+    <Section id="como-funciona" data-sweep-tool={content.sweepTool}>
       <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between md:gap-8">
-        <h2 className="max-w-prose font-display text-display-lg uppercase tracking-display-upper text-ink">
-          No automático, do agendamento ao lembrete.
+        <h2 className="max-w-prose font-display text-display-lg type-display text-ink">
+          {content.title}
         </h2>
-        <Kicker className="shrink-0">O mecanismo</Kicker>
+        <Kicker className="shrink-0">{content.kicker}</Kicker>
       </div>
 
+      {/* Below lg: the tool's line, where the steps' thread runs vertical. */}
+      <span
+        aria-hidden="true"
+        data-cut-line
+        className="mt-12 block h-px origin-left bg-gradient-to-r from-accent/70 via-accent/30 to-transparent lg:hidden"
+      />
+
       <Reveal group>
-        <ol className="relative mt-block grid gap-10 md:grid-cols-3 md:gap-6">
-          {/* TRILHO conector — horizontal ≥md (desenha esq→dir), vertical no mobile. */}
+        <ol className="relative mt-block grid gap-10 md:mt-20 lg:grid-cols-3 lg:gap-6">
           <span
             aria-hidden="true"
-            className="hair-draw pointer-events-none absolute left-[1.5rem] top-2 bottom-2 hidden w-px bg-line md:left-0 md:right-0 md:top-8 md:bottom-auto md:block md:h-px md:w-auto md:bg-gradient-to-r md:from-accent md:via-line md:to-line"
+            data-step-thread
+            className="pointer-events-none absolute bottom-0 left-6 top-6 w-px origin-top bg-gradient-to-b from-accent/70 via-accent/30 to-transparent lg:bottom-auto lg:left-6 lg:right-0 lg:h-px lg:w-auto lg:origin-left lg:bg-gradient-to-r"
           />
-
-          {STEPS.map((step) => (
-            <li key={step.n} className="reveal-item relative flex items-start gap-4 md:block">
-              {/* numeral gravado de latão — máscara bg-surface "corta" a hairline sob ele */}
-              <span className="relative z-rail flex h-16 w-12 shrink-0 items-center justify-center bg-surface font-display text-display-lg leading-none text-accent tabular-nums md:w-16 md:justify-start">
-                {step.n}
-              </span>
-              {/* nota manuscrita decorativa — só no passo automatizado, aponta "← com IA" */}
-              {step.ai ? <HandwrittenNote className="right-0 top-0 md:-top-1" /> : null}
-              <h3 className="mt-1 text-title text-ink md:mt-4">
-                {step.pre}
-                <RoughTarget type={step.type} note={step.note}>
-                  {step.mark}
-                </RoughTarget>
-                {step.post}
-                <span className="text-ink-muted">{step.t}</span>
-              </h3>
-            </li>
+          {content.steps.map((step, i) => (
+            <StepCard key={step.lead} step={step} n={i + 1} />
           ))}
         </ol>
       </Reveal>
 
-      <p className="mt-10 font-mono text-label uppercase tracking-label text-ink-subtle">
-        Configura em minutos — feito pra barbearia, não pra salão genérico.
+      <p className="mt-10 font-mono text-label uppercase leading-normal tracking-label text-ink-subtle">
+        {content.footnote}
       </p>
+
+      {/* The tool's still (static branch only): src and position are set by the stage. */}
+      <img
+        alt=""
+        aria-hidden="true"
+        {...{ [tool.stillAttr]: true }}
+        decoding="async"
+        className="pointer-events-none invisible absolute left-0 top-0 z-rail w-auto max-w-none opacity-0"
+        style={{ height: stillCssHeight(tool.stillFrame, tool.stillLengthPx) }}
+      />
     </Section>
   );
 }

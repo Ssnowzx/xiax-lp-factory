@@ -12,7 +12,7 @@ export function Kicker({
 }: React.HTMLAttributes<HTMLParagraphElement>) {
   return (
     <p
-      className={cn("font-mono text-label uppercase tracking-label text-ink-subtle", className)}
+      className={cn("font-mono text-label uppercase leading-normal tracking-label text-ink-subtle", className)}
       {...props}
     >
       {children}

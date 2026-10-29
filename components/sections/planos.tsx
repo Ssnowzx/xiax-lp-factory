@@ -1,39 +1,25 @@
+import type { PageId, PlansContent, WhatsAppContent } from "@/lib/content/types";
+
 import { Section } from "@/components/ui/section";
-import { TrialForm } from "@/components/forms/trial-form";
 import { Reveal } from "@/components/motion/reveal";
 import { PlanosTable } from "@/components/sections/planos-table";
 
-// #planos — job: OFERTA (Message Map V2). RSC: header + tabela SSRam (indexáveis);
-// só o toggle mensal/anual é ilha client (PlanosTable). 4 tiers por CAPACIDADE, cada
-// um soma ao anterior, "mais popular" destacado, check dourado, barbeiros ILIMITADOS
-// em todos. Destino ÚNICO de conversão: TODOS os CTAs → teste grátis (#planos-form),
-// jamais checkout.
+// #planos — job: OFERTA (change xiax-lp-v4-xchair). RSC header + the plan cards (SSR, indexable).
+// Three plans with the same look: Essencial is live and the only one that can be bought (its
+// card carries the purchase reassurance); Completo and Signature are "em breve". Every button
+// that is not the checkout opens the sales WhatsApp with a message that names the plan.
 
-export function Planos() {
+export function Planos({ content, page, messages }: { content: PlansContent; page: PageId; messages: WhatsAppContent["plan"] }) {
   return (
     <Section id="planos" width="content">
       <Reveal className="mx-auto mb-block max-w-prose text-center">
-        <h2 className="font-display text-display-lg uppercase tracking-display-upper text-ink">
-          Um plano pra cada fase da sua barbearia.
+        <h2 className="font-display text-display-lg type-display text-ink">
+          {content.title}
         </h2>
-        <p className="mt-4 text-body-lg text-ink-muted">
-          Cada plano soma ao anterior. A diferença é a capacidade — os barbeiros são
-          ilimitados em todos.
-        </p>
+        <p className="mt-4 text-body-lg text-ink-muted">{content.body}</p>
       </Reveal>
 
-      <PlanosTable />
-
-      <p className="mt-block text-center font-mono text-label uppercase tracking-label text-ink-subtle">
-        Barbeiros ilimitados em todos os planos · 14 dias grátis, sem cartão · cancele quando
-        quiser
-      </p>
-
-      {/* Destino do CTA de plano: o MESMO teste grátis do #hero/#final. scroll-margin-top
-          global recua o header sticky. */}
-      <div id="planos-form" className="mx-auto mt-block max-w-xl">
-        <TrialForm placement="planos" />
-      </div>
+      <PlanosTable content={content} page={page} messages={messages} />
     </Section>
   );
 }

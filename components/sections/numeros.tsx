@@ -1,31 +1,29 @@
+import type { NumbersContent } from "@/lib/content/types";
+
 import { Section } from "@/components/ui/section";
 import { StatNumber } from "@/components/ui/stat-number";
 import { Kicker } from "@/components/ui/kicker";
 import { Reveal } from "@/components/motion/reveal";
 
-// #numeros — job: PROVA (spine numérico REAL). Três stats na MESMA linha de base (o
-// cliente rejeitou a linha quebrada com o 70% deslocado — lia "solto"). O destaque do
-// 70% vem só da COR (latão), não do tamanho: um accent por seção. O "até" é rótulo
-// pequeno sobre o número (não gigante). Números = <p aria-hidden> (StatNumber).
-const STATS = [
-  { value: "70%", prefix: "até", countTo: 70, label: "menos faltas com lembrete automático", anchor: true },
-  { value: "98%", countTo: 98, label: "de abertura no WhatsApp (e-mail fica em ~20%)", anchor: false },
-  { value: "~R$ 2.000", countTo: 2000, label: "de volta no seu caixa por mês", anchor: false },
-];
-
-export function Numeros() {
+// #numeros — job: PROVA. Três stats na MESMA linha de base (o cliente rejeitou a linha
+// quebrada com o número deslocado — lia "solto"). O destaque vem só da COR (latão), não do
+// tamanho: um accent por seção. O "até" é rótulo pequeno sobre o número (não gigante).
+// Números = <p aria-hidden> (StatNumber). xiax-lp-v4-xchair: every number is either cited
+// (who + year, linked below) or a product fact or a labelled example — the unsourced "70%"
+// and "98%" were dropped.
+export function Numeros({ content }: { content: NumbersContent }) {
   return (
     <Section id="numeros">
       <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between md:gap-8">
-        <h2 className="max-w-prose font-display text-display-lg uppercase tracking-display-upper text-ink">
-          Os números que enchem a cadeira.
+        <h2 className="max-w-prose font-display text-display-lg type-display text-ink">
+          {content.title}
         </h2>
-        <Kicker className="shrink-0">A prova em números</Kicker>
+        <Kicker className="shrink-0">{content.kicker}</Kicker>
       </div>
 
       <Reveal group>
         <ul className="mt-block grid gap-x-8 gap-y-10 sm:grid-cols-3 sm:items-end">
-          {STATS.map((stat) => (
+          {content.stats.map((stat) => (
             <li key={stat.value} className="reveal-item">
               <StatNumber
                 value={stat.value}
@@ -40,9 +38,17 @@ export function Numeros() {
         </ul>
       </Reveal>
 
-      <p className="mt-12 font-mono text-label uppercase tracking-label text-ink-subtle">
-        Fonte: dados de mercado de lembrete automático e abertura de WhatsApp; conta da dor
-        sobre faturamento médio.
+      <p className="mt-12 font-mono text-label uppercase leading-normal tracking-label text-ink-subtle">
+        {content.source.before}{" "}
+        <a
+          href={content.source.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline decoration-line underline-offset-4 transition-colors duration-micro ease-standard hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-accent motion-reduce:transition-none"
+        >
+          {content.source.label}
+        </a>
+        {content.source.after}
       </p>
     </Section>
   );

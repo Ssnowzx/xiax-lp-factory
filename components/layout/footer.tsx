@@ -11,7 +11,7 @@ export function Footer() {
       <div className="relative px-gutter py-12 pb-24 md:pb-12">
         <div className="relative z-[1] mx-auto flex max-w-content flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div className="flex items-center gap-3">
-            <span className="font-display text-title uppercase tracking-display-upper text-ink">
+            <span className="font-display text-title type-display text-ink">
               {SITE.name}
             </span>
             <span className="font-mono text-label uppercase tracking-label text-ink-subtle">
@@ -23,7 +23,7 @@ export function Footer() {
               Reintroduzir como <Link> quando as páginas legais forem publicadas. */}
           <div className="flex flex-wrap items-center gap-6">
             <span className="font-mono text-label uppercase tracking-label text-ink-subtle">
-              feito pela Xiax
+              {SITE.name} · feito pela {SITE.maker}
             </span>
           </div>
         </div>

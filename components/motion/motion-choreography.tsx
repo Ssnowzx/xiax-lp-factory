@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -10,10 +10,15 @@ import {
   EASE_GSAP,
   CLIP,
   PARALLAX,
-  SCISSORS,
-  mq,
+  DEPTH,
+  STEPS,
+  RAZOR,
 } from "@/lib/motion/motion-tokens";
-import { runRoughNotations } from "@/lib/motion/rough-notations";
+import type { GalleryLayerKind } from "@/lib/motion/depth";
+
+import { galleryLayerMotion } from "@/lib/motion/depth";
+import { storyDelays } from "@/lib/motion/steps";
+import { SWEEP_TOOLS, sweepToolOf } from "@/lib/motion/sweep-tool";
 
 /**
  * CAMADA DE COREOGRAFIA (Flagship V2) — Technical Storyboard aprovado (XIA-61, rev 42cea128).
@@ -32,19 +37,22 @@ import { runRoughNotations } from "@/lib/motion/rough-notations";
  *
  * POSSE vs. tier CSS: o reveal CSS (`html.anim-ready:not(.gsap-live) .reveal ...`) é o fallback
  * sem-JS/pré-hidratação. Ao montar, marcamos `html.gsap-live` → o CSS de reveal sai de cena e o
- * GSAP assume os mesmos alvos (sem double-drive). Os desenhos decorativos (mark-brass/hair-draw/
+ * GSAP assume os mesmos alvos (sem double-drive). Os desenhos decorativos (mark-accent/hair-draw/
  * acordeão) seguem no CSS — não são escopados por `:not(.gsap-live)`.
  *
  * HOOKS DEFENSIVOS (ligam sozinhos quando as dependências chegarem, sem quebrar o build):
  *  - count-up: ativa em `[data-count-num]` (hook do `ui-engineer` no StatNumber).
- *  - lembrete "vivo": ativa em `[data-agenda-pulse]` + var CSS `--dur-loop` (hook `ui-engineer` +
- *    token `DUR.loop`/`--dur-loop` do `design-system-architect`).
+ *  (v4 · xiax-lp-v4-xchair: the hand-built hero agenda is gone, and with it the slot assembly
+ *  and the "live" reminder pulse — the hero shows the real app screens now.)
  *
  * ARQUITETURA: cada bloco do storyboard vira uma função local nomeada (XIA-79 · Eixo 9); o
  * callback do `matchMedia` só orquestra a ordem, mantendo-se fino.
  */
 
 const ENTER = "top 85%";
+/** The razor's cut point (xiax-lp-v3-razor-3d · design D7): the line it cuts draws mid-screen,
+ *  so the 3D razor (scissors-stage) can ride the drawing front. Same point with or without it. */
+const CUT_AT = `top ${RAZOR.cutAtVh * 100}%`;
 const TOGGLE = "play none none reverse";
 
 type InHero = (el: Element) => boolean;
@@ -88,28 +96,6 @@ function groupStaggers(inHero: InHero) {
   });
 }
 
-// ---- 3. Depoimentos (sem wrapper .reveal no markup) — reveal sutil -----------
-function testimonialReveal() {
-  const depoItems = gsap.utils.toArray<HTMLElement>("#depoimentos ul > li");
-  if (!depoItems.length) return;
-  gsap.fromTo(
-    depoItems,
-    { autoAlpha: 0, y: 16 },
-    {
-      autoAlpha: 1,
-      y: 0,
-      duration: DUR.reveal,
-      ease: EASE_GSAP.out,
-      stagger: STAGGER.base,
-      scrollTrigger: {
-        trigger: "#depoimentos",
-        start: "top 80%",
-        toggleActions: TOGGLE,
-      },
-    },
-  );
-}
-
 // ---- 4. HERO — abertura cerimonial na carga (acima da dobra) -----------------
 // `media`/`mediaH` chegam MEDIDOS de fora (fase measure→mutate, XIA-82): a leitura
 // de layout (offsetHeight) acontece ANTES de qualquer tween mutar o DOM → zero reflow forçado.
@@ -134,11 +120,10 @@ function heroTimeline(hero: HTMLElement, media: HTMLElement | null, mediaH: numb
         duration: DUR.hero,
         ease: EASE_GSAP.hero,
         // `CLIP.shown` é `inset(0 0 0 0)` — revela 100% do texto, mas CONTINUA
-        // sendo um clip na borda da caixa. O `rough-notation` appenda o SVG do
-        // círculo DENTRO do h1, e a elipse de "zero" vaza ~34px abaixo dele:
-        // esses 34px eram decepados. Limpar a prop no fim tira o clip do
-        // caminho. A timeline não tem ScrollTrigger e nunca reverte, então o
-        // `fromTo` não precisa do valor final preservado. XIA-120.
+        // sendo um clip na borda da caixa: o que desenhar fora dela seria decepado.
+        // Limpar a prop no fim tira o clip do caminho. A timeline não tem
+        // ScrollTrigger e nunca reverte, então o `fromTo` não precisa do valor
+        // final preservado. XIA-120.
         onComplete: () => gsap.set(h1, { clipPath: "none" }),
       },
       0,
@@ -182,27 +167,124 @@ function heroTimeline(hero: HTMLElement, media: HTMLElement | null, mediaH: numb
   }
 }
 
-// ---- 5. Galeria — parallax leve por slot (soft), profundidade alternada ------
+// ---- 5. Galeria — parallax inside each clipped frame (v3 · design D6) ---------
+// The frame no longer moves (it is the depth stage that tilts); its images do, like a view
+// through a window: the plate lags the page most, the cut-out subject a little less (so it
+// reads nearer), and a whole photo drifts like the plate. Each layer zooms just enough that
+// no frame edge ever shows.
+const GALLERY_LAYER_KINDS: readonly GalleryLayerKind[] = ["plate", "subject", "full"];
+
 function galleryParallax() {
-  gsap.utils
-    .toArray<HTMLElement>("#galeria .media-frame")
-    .forEach((frame, i) => {
-      const depth = i % 2 === 0 ? PARALLAX.soft : PARALLAX.soft * 0.6;
-      gsap.fromTo(
-        frame,
-        { yPercent: depth * 0.15 },
-        {
-          yPercent: -depth * 0.15,
-          ease: "none",
-          scrollTrigger: {
-            trigger: frame,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: SCRUB.loose,
-          },
+  gsap.utils.toArray<HTMLElement>("#galeria [data-gallery-layer]").forEach((layer) => {
+    const kind = GALLERY_LAYER_KINDS.find((k) => k === layer.dataset.galleryLayer);
+    if (!kind) return;
+    const motion = galleryLayerMotion(kind, DEPTH.galleryShiftPct, DEPTH.gallerySubjectFactor);
+    gsap.fromTo(
+      layer,
+      { yPercent: motion.fromYPercent, scale: motion.scale },
+      {
+        yPercent: motion.toYPercent,
+        ease: "none",
+        scrollTrigger: {
+          trigger: layer.closest("[data-slot]") ?? layer,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: SCRUB.loose,
         },
-      );
-    });
+      },
+    );
+  });
+}
+
+// ---- 5b. Como funciona — each mini screen plays its step once (v3 · design D12) --
+// `delays` arrive MEASURED (storyDelays over the screens' tops): side by side, the three
+// screens play 1 → 2 → 3 as one story; stacked on a phone, each starts as it scrolls in.
+// Every tween ends with clearProps so no inline transform is left behind.
+// A horizontal line (the thread ≥md, the phone hairline) is the razor's cut line: it draws at
+// CUT_AT at the cut's pace, and side by side the screens start with it — the cut sets the
+// steps going. The vertical thread (cards stacked) draws as it enters, like any reveal.
+// All of it plays again on each way down (owner, 2026-10-28): see rewindWhenLeftBelow.
+// xiax-lp-v5-salon (D7): the pace is the page's tool's — the razor's cut, the brush's slower roll.
+function drawLine(line: HTMLElement | null, axis: "x" | "y"): gsap.core.Tween | null {
+  if (!line) return null;
+  const isCut = axis === "x";
+  const scale = isCut ? "scaleX" : "scaleY";
+  const tool = SWEEP_TOOLS[sweepToolOf(document.querySelector<HTMLElement>("#como-funciona")?.dataset.sweepTool) ?? "razor"];
+  return gsap.fromTo(
+    line,
+    { [scale]: 0 },
+    {
+      [scale]: 1,
+      duration: isCut ? tool.drawS : DUR.revealSlow,
+      ease: isCut ? tool.drawEase : EASE_GSAP.standard,
+      clearProps: "transform",
+      scrollTrigger: { trigger: line, start: isCut ? CUT_AT : ENTER, toggleActions: "play none none none" },
+    },
+  );
+}
+
+/** `cutLine`: start with the cut (cards side by side); null: start as the screen enters. */
+function stepScreen(screen: HTMLElement, delay: number, cutLine: HTMLElement | null): gsap.core.Timeline {
+  const q = gsap.utils.selector(screen);
+  const rise = { autoAlpha: 0, y: STEPS.riseYPx };
+  const settle = { autoAlpha: 1, y: 0, clearProps: "transform" };
+  const start = cutLine
+    ? { trigger: cutLine, start: CUT_AT }
+    : { trigger: screen, start: ENTER };
+  const tl = gsap.timeline({
+    defaults: { duration: DUR.microIn, ease: EASE_GSAP.standard },
+    scrollTrigger: { ...start, toggleActions: "play none none none" },
+  });
+  tl.fromTo(q("[data-step-in]"), rise, { ...settle, stagger: STAGGER.tight }, delay);
+  q("[data-step-key]").forEach((key: HTMLElement) => {
+    const from = key.dataset.stepKey === "drop" ? { autoAlpha: 0, y: -STEPS.dropYPx } : { autoAlpha: 0, scale: STEPS.popFromScale };
+    tl.fromTo(key, from, { autoAlpha: 1, y: 0, scale: 1, ease: EASE_GSAP.pop, clearProps: "transform" }, ">");
+  });
+  const typing = q("[data-step-typing]");
+  if (typing.length) {
+    tl.fromTo(typing, { autoAlpha: 0 }, { autoAlpha: 1 }, ">").to(typing, { autoAlpha: 0 }, `>+${STEPS.typingHoldS}`);
+  }
+  const after = q("[data-step-after]");
+  if (after.length) tl.fromTo(after, rise, settle, ">");
+  return tl;
+}
+
+/**
+ * Once the cut line drops back out of view below (the visitor went up past the section), the
+ * section's one-shot animations rewind there, out of sight, so the next way down plays them
+ * again. The razor follows: a line back at nothing re-arms its cut (design D4). Coming back
+ * up from below plays nothing — the line stays cut.
+ */
+function rewindWhenLeftBelow(cutLine: HTMLElement | null, animations: (gsap.core.Animation | null)[]) {
+  if (!cutLine) return;
+  ScrollTrigger.create({
+    trigger: cutLine,
+    start: `top ${RAZOR.approachFromVh * 100}%`,
+    onLeaveBack: () => animations.forEach((animation) => animation?.pause(0)),
+  });
+}
+
+/** Layout reads for #como-funciona, taken in the MEASURE phase (before any mutation). */
+function measureSteps() {
+  const thread = document.querySelector<HTMLElement>("#como-funciona [data-step-thread]");
+  const hairline = document.querySelector<HTMLElement>("#como-funciona [data-cut-line]");
+  const screens = gsap.utils.toArray<HTMLElement>("#como-funciona [data-step-screen]");
+  return {
+    thread,
+    threadVertical: (thread?.offsetWidth ?? 0) <= 1,
+    hairline: (hairline?.offsetWidth ?? 0) > 1 ? hairline : null,
+    screens,
+    delays: storyDelays(screens.map((el) => el.getBoundingClientRect().top), STEPS.storyGapS),
+  };
+}
+
+/** Lines, step screens and their rewind (MUTATE phase), from `measureSteps`. */
+function stepsMotion({ thread, threadVertical, hairline, screens, delays }: ReturnType<typeof measureSteps>) {
+  const threadDraw = drawLine(thread, threadVertical ? "y" : "x");
+  const hairlineDraw = drawLine(hairline, "x");
+  const screensStartWith = threadVertical ? null : thread;
+  const screenPlays = screens.map((screen, i) => stepScreen(screen, delays[i] ?? 0, screensStartWith));
+  rewindWhenLeftBelow(hairline ?? thread, [threadDraw, hairlineDraw, ...screenPlays]);
 }
 
 // ---- 6. Planos — pop do selo "mais popular" na entrada ----------------------
@@ -225,11 +307,47 @@ function popularFlagPop() {
 }
 
 // ---- 7. Count-up (ativa quando o ui-engineer expuser [data-count-num]) -------
-function countUp() {
+// The number's own text never changes: it stays at its final, server-rendered value
+// (made transparent) and the counting digits are drawn by an absolutely positioned,
+// aria-hidden copy on top. Text that changed width in the flow would push whatever
+// follows it ("+", "%") on every frame — a layout shift.
+interface CountOverlay {
+  start(): void;
+  set(text: string): void;
+  end(): void;
+}
+
+function countOverlay(el: HTMLElement): CountOverlay {
+  const live = document.createElement("span");
+  live.setAttribute("aria-hidden", "true");
+  return {
+    start() {
+      live.style.cssText = `position:absolute;top:0;inset-inline-start:0;white-space:nowrap;color:${getComputedStyle(el).color}`;
+      el.style.position = "relative";
+      el.style.color = "transparent";
+      el.append(live);
+    },
+    set(text) {
+      live.textContent = text;
+    },
+    end() {
+      live.remove();
+      el.style.removeProperty("position");
+      el.style.removeProperty("color");
+    },
+  };
+}
+
+/** Starts every count-up; the returned cleanup puts the real numbers back if motion is reverted mid-count. */
+function countUp(): () => void {
+  const overlays: CountOverlay[] = [];
   gsap.utils.toArray<HTMLElement>("[data-count-num]").forEach((el) => {
     const to = parseFloat(el.dataset.countTo ?? el.textContent ?? "0");
     if (!Number.isFinite(to)) return;
     const dec = parseInt(el.dataset.countDecimals ?? "0", 10);
+    const format = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    const overlay = countOverlay(el);
+    overlays.push(overlay);
     const state = { v: 0 };
     gsap.to(state, {
       v: to,
@@ -240,148 +358,15 @@ function countUp() {
         start: ENTER,
         toggleActions: "play none none none",
       },
-      onUpdate: () => {
-        el.textContent = state.v.toLocaleString("pt-BR", {
-          minimumFractionDigits: dec,
-          maximumFractionDigits: dec,
-        });
-      },
+      onStart: overlay.start,
+      onUpdate: () => overlay.set(format(state.v)),
+      onComplete: overlay.end,
     });
   });
-}
-
-// ---- 8. Lembrete "vivo" (ativa com [data-agenda-pulse] + var --dur-loop) -----
-// `loopDur` chega MEDIDO de fora (fase measure→mutate, XIA-82): o `getComputedStyle`
-// do --dur-loop roda ANTES das mutações do build → não força recalc depois delas.
-function livePulse(loopDur: number) {
-  const pulse = document.querySelector<HTMLElement>("[data-agenda-pulse]");
-  if (!pulse || !Number.isFinite(loopDur) || loopDur <= 0) return;
-  gsap.to(pulse, {
-    scale: 1.08,
-    autoAlpha: 0.72,
-    transformOrigin: "center",
-    duration: loopDur,
-    ease: EASE_GSAP.loop, // token canônico (DS) — fecha o magic number do XIA-74.
-    repeat: -1,
-    yoyo: true,
-    scrollTrigger: {
-      trigger: pulse,
-      start: "top bottom",
-      end: "bottom top",
-      toggleActions: "play pause resume pause",
-    },
-  });
-}
-
-// ---- 9. Trilho da tesoura (scroll-cut) — decisão do cliente ------------------
-// A tesoura desce/sobe pela LATERAL DIREITA ligada ao scroll, "cortando a página":
-// uma linha fina de latão é DESENHADA atrás dela (stroke-dashoffset, o único jeito de
-// "cortar" — sem rastro a tesoura só desliza) e ao INVERTER o scroll ela gira 180° e
-// aponta p/ cima (a lâmina sempre lidera). As lâminas abrem/fecham no scroll ("snip").
-//
-// FORA-DE-CLIP (armadilha do brief): o SVG é `position: fixed` na gutter, filho DIRETO
-// do <body> (o SmoothScrollProvider não renderiza DOM) — nenhum ancestral tem transform/
-// contain/filter/overflow que o corte; ele NÃO mora dentro de nenhuma <section> com
-// `overflow-x-clip`. CLS 0 (fora do fluxo). Só `transform`/`opacity` + `stroke-dashoffset`.
-// Lateral DIREITA: a coluna de texto ocupa a gutter esquerda em TODA seção; a direita só
-// tem o AgendaMock (sangra) no #hero — 10/11 seções têm a gutter direita livre.
-
-// Geometria do SVG da tesoura (pareia com o markup): pivô do rivet no viewBox 48×104.
-const SCISSORS_PIVOT = "24 46";
-
-function selectRail(rail: HTMLElement) {
-  return {
-    line: rail.querySelector<HTMLElement>("[data-scissors-line]"),
-    scissors: rail.querySelector<HTMLElement>("[data-scissors]"),
-    bladeL: rail.querySelector<SVGGElement>('[data-blade="l"]'),
-    bladeR: rail.querySelector<SVGGElement>('[data-blade="r"]'),
-  };
-}
-
-// 9a. Ramo ATIVO (≥md, sem reduced): tesoura ligada ao scroll.
-function scissorsRail(rail: HTMLElement) {
-  const { line, scissors, bladeL, bladeR } = selectRail(rail);
-  if (!line || !scissors || !bladeL || !bladeR) return;
-
-  // A tesoura PARA no topo do footer (a divisória `poste-hair`), não invade o rodapé:
-  // encurta o rail fixed pela altura do footer. Como o curso da tesoura e o `h-full` da
-  // linha derivam de `rail.clientHeight`, ambos se ajustam sozinhos → no fim do scroll a
-  // lâmina descansa exatamente na divisória. XIA-123.
-  const footer = document.querySelector<HTMLElement>("footer");
-  rail.style.bottom = footer ? `${footer.offsetHeight}px` : "0px";
-
-  // Estado inicial: rastro ainda não cortado (scaleY 0, cresce p/ 1), tesoura no topo
-  // apontando p/ baixo. Centragem X é do wrapper flex — o GSAP só mexe em `y`/`rotation`.
-  gsap.set(scissors, { y: 0, rotation: 0 });
-  gsap.set(line, { clipPath: "inset(0px 0px 100% 0px)" });
-  gsap.set([bladeL, bladeR], { svgOrigin: SCISSORS_PIVOT, rotation: 0 });
-
-  // Flip 180° ao inverter a direção — `quickTo` é sancionado fora de timeline (gate 4)
-  // e reaproveita o tween (barato). Tween por tempo → ease NÃO-linear (token do DS).
-  const flipTo = gsap.quickTo(scissors, "rotation", {
-    duration: DUR.microIn,
-    ease: EASE_GSAP.standard,
-  });
-  let dir = 1;
-
-  // O rastro fica sempre À FRENTE da tesoura, na direção do movimento (pedido do cliente):
-  //  - DESCENDO: a tesoura lidera no topo e o rastro se estende ABAIXO dela, no caminho a
-  //    percorrer → clipa o trecho ACIMA da lâmina (`inset(top …)`).
-  //  - SUBINDO: a tesoura corta o rastro de baixo p/ cima → clipa o trecho ABAIXO da
-  //    lâmina (`inset(bottom …)`), o comportamento que o cliente aprovou.
-  // Por isso o clip é dirigido no onUpdate (depende da direção), não num tween linear.
-  const applyLineClip = (d: number, p: number) => {
-    const clip =
-      d === -1
-        ? `inset(0px 0px ${(1 - p) * 100}% 0px)` // subindo: corta de baixo
-        : `inset(${p * 100}% 0px 0px 0px)`; //        descendo: rastro à frente
-    gsap.set(line, { clipPath: clip });
-  };
-  applyLineClip(1, 0); // topo, descendo: rastro inteiro à frente (tesoura no topo)
-
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: document.documentElement,
-      start: "top top",
-      end: "bottom bottom",
-      scrub: SCRUB.base, // numérico (nunca `true`)
-      invalidateOnRefresh: true, // re-mede o curso da tesoura em resize/rotate
-      onUpdate: (self) => {
-        // Direção: gira a tesoura (a lâmina passa a liderar o sentido do movimento).
-        if (self.direction !== dir) {
-          dir = self.direction;
-          flipTo(dir === -1 ? SCISSORS.flipDeg : 0);
-        }
-        applyLineClip(dir, self.progress);
-        // "Corte": lâminas abrem/fecham conforme percorre a página. sin²(p·snips·π)
-        // fica ≥0 e faz `snips` ciclos abre-fecha suaves; 0 = repouso (lâmina aberta).
-        const theta =
-          Math.sin(self.progress * SCISSORS.snips * Math.PI) ** 2 * SCISSORS.snipDeg;
-        gsap.set(bladeL, { rotation: theta });
-        gsap.set(bladeR, { rotation: -theta });
-      },
-    },
-  });
-  // Curso da tesoura medido por função → recalcula no refresh sem magic number.
-  tl.to(
-    scissors,
-    { y: () => rail.clientHeight - scissors.offsetHeight, ease: "none" },
-    0,
-  );
-}
-
-// 9b. Ramo ESTÁTICO (reduced-motion / ?reduced=1): sem movimento. Decisão: a LINHA
-// fica inteira desenhada (o corte é o que vende a metáfora — mantê-lo estático preserva
-// a identidade) e a tesoura repousa no topo, apontando p/ baixo. Conteúdo intacto.
-function scissorsStatic(rail: HTMLElement) {
-  const { line, scissors } = selectRail(rail);
-  if (line) gsap.set(line, { clipPath: "inset(0px 0px 0% 0px)" });
-  if (scissors) gsap.set(scissors, { y: 0, rotation: 0 });
+  return () => overlays.forEach((overlay) => overlay.end());
 }
 
 export function MotionChoreography() {
-  const railRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -390,9 +375,6 @@ export function MotionChoreography() {
       new URLSearchParams(window.location.search).get("reduced") === "1";
 
     const mm = gsap.matchMedia();
-    // ASSENTO rough-notation (WS3): cleanup fora do ciclo GSAP (SVGs no body não são
-    // revertidos por mm.revert()). Re-armado a cada callback, limpo no teardown.
-    let roughCleanup: () => void = () => {};
 
     mm.add(
       {
@@ -401,11 +383,6 @@ export function MotionChoreography() {
       },
       (ctx) => {
         const reduced = Boolean(ctx.conditions?.reduce) || forceReduced;
-
-        // rough-notation roda nos DOIS ramos: reduced → estado final instantâneo
-        // (animate:false). No-op se o motion-engineer ainda não marcou alvos.
-        roughCleanup();
-        roughCleanup = runRoughNotations({ reduced });
 
         // Reduced: só toma posse (tier CSS sai por :not(.gsap-live)); conteúdo 100%
         // visível, zero movimento. Antecipado p/ não medir layout à toa.
@@ -416,7 +393,7 @@ export function MotionChoreography() {
 
         const hero = document.querySelector<HTMLElement>("#hero");
         const inHero: InHero = (el) => !!hero && hero.contains(el);
-        const heroMedia = hero?.querySelector<HTMLElement>('[role="img"]') ?? null;
+        const heroMedia = hero?.querySelector<HTMLElement>("[data-hero-media]") ?? null;
 
         // ── MEASURE (XIA-82 · NIT forced-reflow) ─────────────────────────────
         // TODAS as leituras de layout ANTES de qualquer mutação (classList/tweens):
@@ -424,9 +401,7 @@ export function MotionChoreography() {
         // mutar o DOM. Ler antes do `gsap-live` é seguro: o estado escondido do
         // reveal é só opacity+transform (não altera offsetHeight).
         const heroMediaH = heroMedia?.offsetHeight ?? 0;
-        const loopDur = parseFloat(
-          getComputedStyle(root).getPropertyValue("--dur-loop").trim(),
-        );
+        const steps = measureSteps();
 
         // ── MUTATE ───────────────────────────────────────────────────────────
         // Posse: o GSAP assume os reveals (o tier CSS sai por :not(.gsap-live)).
@@ -434,103 +409,20 @@ export function MotionChoreography() {
 
         blockReveals(inHero);
         groupStaggers(inHero);
-        testimonialReveal();
         if (hero) heroTimeline(hero, heroMedia, heroMediaH);
+        stepsMotion(steps);
         galleryParallax();
         popularFlagPop();
-        countUp();
-        livePulse(loopDur);
+        const countCleanup = countUp();
 
         ScrollTrigger.refresh();
+        return countCleanup;
       },
     );
 
-    // Trilho da tesoura (scroll-cut) — registro SEPARADO com gate de largura próprio:
-    // só existe ≥md (mobile: sem gutter livre → o CSS `hidden md:block` já o esconde e
-    // aqui nem construímos os triggers). Reduced/?reduced=1 → ramo estático (linha inteira).
-    mm.add(
-      {
-        reduce: "(prefers-reduced-motion: reduce)",
-        ok: "(prefers-reduced-motion: no-preference)",
-        isDesktop: mq("md"),
-      },
-      (ctx) => {
-        const rail = railRef.current;
-        if (!rail || !ctx.conditions?.isDesktop) return;
-        const reduced = Boolean(ctx.conditions?.reduce) || forceReduced;
-        if (reduced) {
-          scissorsStatic(rail);
-          return;
-        }
-        scissorsRail(rail);
-      },
-    );
-
-    return () => {
-      roughCleanup();
-      mm.revert();
-    };
+    return () => mm.revert();
   }, []);
 
-  // SVG decorativo puro (aria-hidden, pointer-events:none) — `position: fixed` na gutter
-  // direita, fora de qualquer <section> (nada o corta). `hidden md:block`: sem tesoura no
-  // mobile. CLS 0 (fora do fluxo). `text-accent` = latão (token do DS) via currentColor.
-  return (
-    <div
-      ref={railRef}
-      aria-hidden="true"
-      className="pointer-events-none fixed right-0 z-rail hidden w-[clamp(48px,6vw,72px)] text-accent md:block"
-      style={{ top: "var(--header-h)", bottom: 0 }}
-    >
-      {/* Linha do corte — o "rastro" pontilhado e discreto que a tesoura vai deixando.
-          Os traços são um `repeating-linear-gradient` de altura fixa (não distorce), e a
-          REVELAÇÃO de cima p/ baixo é via `clip-path: inset()` (a ponta acompanha a
-          tesoura). clip-path com % não sofre o autoRound do GSAP (que arredonda px), e a
-          área pintada é só 1px de largura — sem o custo de repaint do stroke-dashoffset
-          que derrubava o FPS. XIA-122. */}
-      <div
-        data-scissors-line
-        className="absolute top-0 h-full w-px"
-        style={{
-          left: "calc(50% - 0.5px)",
-          opacity: 0.4,
-          backgroundImage:
-            "repeating-linear-gradient(to bottom, currentColor 0 2px, transparent 2px 8px)",
-          clipPath: "inset(0 0 100% 0)",
-        }}
-      />
-
-      {/* Wrapper de CENTRAGEM (flexbox, sem transform) → o GSAP fica dono só de `y`/
-          `rotation` na tesoura, sem conflitar com centragem nem piscar fora do eixo. */}
-      <div className="absolute inset-x-0 top-0 flex justify-center">
-        {/* Tesoura — SVG de aspecto FIXO (viewBox 48×104), transladada em px pelo scroll;
-            gira 180° ao subir. Lâminas = dois <g> que giram no pivô do rivet (SCISSORS_PIVOT). */}
-        <div data-scissors className="w-[clamp(20px,2.4vw,28px)]">
-          <svg viewBox="0 0 48 104" fill="none" className="h-auto w-full">
-            <g
-              data-blade="l"
-              stroke="currentColor"
-              strokeWidth={3.6}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="15" cy="12" r="6.5" />
-              <path d="M15 18 L24 46 L30 98" />
-            </g>
-            <g
-              data-blade="r"
-              stroke="currentColor"
-              strokeWidth={3.6}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="33" cy="12" r="6.5" />
-              <path d="M33 18 L24 46 L18 98" />
-            </g>
-            <circle cx="24" cy="46" r="2.8" fill="currentColor" />
-          </svg>
-        </div>
-      </div>
-    </div>
-  );
+  // The scissors rail moved to ScissorsStage (xiax-lp-v3-scissors-3d · design D7).
+  return null;
 }

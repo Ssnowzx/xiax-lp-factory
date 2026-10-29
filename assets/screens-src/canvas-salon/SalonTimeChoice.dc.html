@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Escolha do horário — Salão Aurora</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F1EA}
+a{color:#7B4A3C}a:hover{color:#5C3529}
+button{font-family:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #F6F1EA; color: #1C1714; font-family: Manrope, system-ui, sans-serif">
+
+  <header style="padding: 12px 16px 0; display: flex; align-items: center; justify-content: space-between">
+    <a href="SalonHome.dc.html" aria-label="Voltar" style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #1C1714; background: #FDFAF5">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+    </a>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 2px">
+      <span style="font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; color: {{accent}}">Passo 2 de 3</span>
+      <span style="font-family: 'Bodoni Moda', serif; font-size: 22px; font-weight: 500">Escolha o horário</span>
+    </div>
+    <span aria-hidden="true" style="width: 44px"></span>
+  </header>
+
+  <div style="margin: 14px 20px 0; padding: 10px 12px; border-radius: 16px; background: #FDFAF5; border: 1px solid #E3D9CC; display: flex; align-items: center; gap: 12px">
+    <img src="/_blob/110e571668da68b9524c1e86899b58ed" alt="" style="width: 44px; height: 44px; border-radius: 12px; object-fit: cover; object-position: 50% 30%">
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+      <span style="font-size: 15px; font-weight: 600">Escova modelada</span>
+      <span style="font-size: 12px; color: #6E625A">50 min · R$ 90</span>
+    </div>
+    <a href="SalonHome.dc.html" style="font-size: 13px; font-weight: 600; text-decoration: none; color: {{accent}}; padding: 12px 4px">Trocar</a>
+  </div>
+
+  <h2 style="margin: 20px 20px 10px; font-family: 'Bodoni Moda', serif; font-weight: 500; font-size: 22px">Com quem</h2>
+  <div role="group" aria-label="Profissional" style="display: flex; gap: 6px; padding: 0 14px; overflow-x: auto">
+    <sc-for list="{{pros}}" as="p" hint-placeholder-count="5">
+      <button type="button" aria-pressed="{{p.selected}}" onClick="{{p.pick}}" style="width: 68px; flex-shrink: 0; padding: 0; background: none; border: none; color: {{p.labelColor}}; display: flex; flex-direction: column; align-items: center; gap: 6px">
+        <span style="width: 56px; height: 56px; box-sizing: border-box; border-radius: 50%; border: {{p.ring}}; padding: 3px; display: flex">
+          <span style="flex: 1; border-radius: 50%; background: #EFE8DE; display: flex; align-items: center; justify-content: center; font-family: 'Bodoni Moda', serif; font-size: 22px; font-weight: 500; color: #1C1714">{{p.initials}}</span>
+        </span>
+        <span style="font-size: 12px; font-weight: 600; line-height: 1.2; text-align: center">{{p.name}}</span>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="margin: 20px 20px 10px; display: flex; align-items: baseline; justify-content: space-between">
+    <h2 style="margin: 0; font-family: 'Bodoni Moda', serif; font-weight: 500; font-size: 22px">Quando</h2>
+    <span style="font-size: 12px; color: #6E625A">Outubro · Novembro</span>
+  </div>
+  <div role="group" aria-label="Dia" style="display: flex; gap: 8px; padding: 0 20px; overflow-x: auto">
+    <sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+      <button type="button" aria-pressed="{{d.selected}}" aria-label="{{d.aria}}" onClick="{{d.pick}}" style="width: 52px; height: 76px; flex-shrink: 0; box-sizing: border-box; border-radius: 16px; background: {{d.bg}}; color: {{d.fg}}; border: {{d.border}}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 0">
+        <span style="font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700">{{d.dow}}</span>
+        <span style="font-family: 'Bodoni Moda', serif; font-size: 26px; font-weight: 600; line-height: 1.05">{{d.num}}</span>
+        <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.04em; min-height: 11px">{{d.tag}}</span>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="padding: 18px 20px 0; display: flex; flex-direction: column; gap: 14px">
+    <sc-if value="{{isOpen}}" hint-placeholder-val="{{ true }}">
+      <sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <span style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; color: #6E625A">{{g.label}}</span>
+          <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+            <sc-for list="{{g.slots}}" as="s" hint-placeholder-count="4">
+              <button type="button" aria-pressed="{{s.selected}}" onClick="{{s.pick}}" style="height: 44px; border-radius: 12px; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; background: {{s.bg}}; color: {{s.fg}}; border: {{s.border}}">{{s.label}}</button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </sc-if>
+    <sc-if value="{{isFull}}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 20px; border-radius: 18px; border: 1px dashed #C9BCAB; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-family: 'Bodoni Moda', serif; font-size: 24px">Sábado está lotado</span>
+        <span style="font-size: 14px; line-height: 1.5; color: #6E625A">Entre na lista de espera. Se abrir uma vaga, você recebe o aviso e confirma pelo site com um toque.</span>
+        <button type="button" style="margin-top: 4px; height: 48px; border-radius: 999px; background: transparent; border: 1px solid {{accent}}; color: {{accent}}; font-size: 14px; font-weight: 700">Entrar na lista de espera</button>
+      </div>
+    </sc-if>
+    <sc-if value="{{isClosed}}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 20px; border-radius: 18px; background: #FDFAF5; display: flex; flex-direction: column; gap: 6px">
+        <span style="font-family: 'Bodoni Moda', serif; font-size: 24px">Fechado aos domingos</span>
+        <span style="font-size: 14px; color: #6E625A">Escolha outro dia para ver os horários.</span>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 20px 24px; box-sizing: border-box; background: rgba(246,241,234,0.96); border-top: 1px solid #E3D9CC; display: flex; align-items: center; gap: 14px">
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+      <span style="font-size: 15px; font-weight: 700">{{summaryTitle}}</span>
+      <span style="font-size: 12px; color: #6E625A">{{summaryDetail}}</span>
+    </div>
+    <sc-if value="{{canContinue}}" hint-placeholder-val="{{ true }}">
+      <a href="SalonConfirmed.dc.html" style="height: 52px; padding: 0 26px; border-radius: 999px; background: {{accent}}; color: #FBF7F1; display: flex; align-items: center; font-weight: 700; font-size: 15px; text-decoration: none">Continuar</a>
+    </sc-if>
+    <sc-if value="{{cannotContinue}}" hint-placeholder-val="{{ false }}">
+      <button type="button" disabled style="height: 52px; padding: 0 26px; border-radius: 999px; background: #EFE8DE; color: #9A8E83; border: none; font-weight: 700; font-size: 15px; cursor: default">Continuar</button>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#7B4A3C","options":["#7B4A3C","#6B3F5A","#545A3A","#34495E"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { pro: 'camila', day: 2, slot: '15h00' };
+  }
+
+  renderVals() {
+    const accent = this.props.accent ?? '#7B4A3C';
+    const state = this.state;
+    const PROS = [
+      { id: 'any', name: 'Sem preferência', initials: '·' },
+      { id: 'camila', name: 'Camila', initials: 'C' },
+      { id: 'bianca', name: 'Bianca', initials: 'B' },
+      { id: 'livia', name: 'Lívia', initials: 'L' }
+    ];
+    const DAYS = [
+      { dow: 'Qua', num: '28', long: 'Quarta, 28 out', tag: 'Hoje', kind: 'open' },
+      { dow: 'Qui', num: '29', long: 'Quinta, 29 out', tag: '', kind: 'open' },
+      { dow: 'Sex', num: '30', long: 'Sexta, 30 out', tag: '', kind: 'open' },
+      { dow: 'Sáb', num: '31', long: 'Sábado, 31 out', tag: 'Lotado', kind: 'full' },
+      { dow: 'Dom', num: '1', long: 'Domingo, 1 nov', tag: 'Fechado', kind: 'closed' },
+      { dow: 'Seg', num: '2', long: 'Segunda, 2 nov', tag: '', kind: 'open' },
+      { dow: 'Ter', num: '3', long: 'Terça, 3 nov', tag: '', kind: 'open' }
+    ];
+    const SLOTS = {
+      0: [[], ['15h30', '16h00', '17h30'], ['18h00', '19h00']],
+      1: [['9h00', '9h45', '10h30', '11h15'], ['13h30', '14h15', '15h00', '16h30'], ['18h15', '19h00']],
+      2: [['9h30', '10h15', '11h00'], ['14h00', '15h00', '15h45', '16h30'], ['18h00', '18h45']],
+      5: [['9h00', '10h30', '11h15'], ['13h00', '14h30', '16h00'], ['18h30']],
+      6: [['9h45', '10h30'], ['13h30', '15h00', '15h45', '17h00'], ['18h00', '19h15']]
+    };
+    const LABELS = ['Manhã', 'Tarde', 'Noite'];
+
+    const pros = PROS.map((p) => {
+      const selected = state.pro === p.id;
+      return {
+        ...p,
+        selected,
+        ring: selected ? '2px solid ' + accent : '1px solid #DCD1C3',
+        labelColor: selected ? '#1C1714' : '#6E625A',
+        pick: () => this.setState({ pro: p.id })
+      };
+    });
+
+    const days = DAYS.map((d, i) => {
+      const selected = state.day === i;
+      let bg = '#FDFAF5';
+      let fg = '#1C1714';
+      let border = '1px solid #E3D9CC';
+      if (d.kind === 'full') { bg = 'transparent'; fg = '#6E625A'; border = '1px dashed #C9BCAB'; }
+      if (d.kind === 'closed') { bg = 'transparent'; fg = '#9A8E83'; border = '1px solid transparent'; }
+      if (selected && d.kind === 'open') { bg = accent; fg = '#FBF7F1'; border = '1px solid ' + accent; }
+      if (selected && d.kind !== 'open') { border = '1px solid #6E625A'; }
+      return {
+        ...d,
+        selected,
+        bg,
+        fg,
+        border,
+        aria: d.long + (d.tag ? ', ' + d.tag : ''),
+        pick: () => this.setState({ day: i, slot: null })
+      };
+    });
+
+    const current = DAYS[state.day];
+    const daySlots = SLOTS[state.day] || [[], [], []];
+    const groups = daySlots
+      .map((list, gi) => ({
+        label: LABELS[gi],
+        slots: list.map((t) => {
+          const selected = state.slot === t;
+          return {
+            label: t,
+            selected,
+            bg: selected ? accent : '#FDFAF5',
+            fg: selected ? '#FBF7F1' : '#1C1714',
+            border: selected ? '1px solid ' + accent : '1px solid #E3D9CC',
+            pick: () => this.setState({ slot: t })
+          };
+        })
+      }))
+      .filter((g) => g.slots.length > 0);
+
+    const proName = PROS.find((p) => p.id === state.pro).name;
+    const isOpen = current.kind === 'open';
+    const canContinue = isOpen && Boolean(state.slot);
+    const summaryTitle = canContinue ? current.long + ' · ' + state.slot : current.long;
+    const summaryDetail = canContinue
+      ? 'Escova modelada · ' + (state.pro === 'any' ? 'quem estiver livre' : 'com ' + proName)
+      : (isOpen ? 'Escolha um horário' : (current.kind === 'full' ? 'Dia lotado' : 'Fechado neste dia'));
+
+    return {
+      accent,
+      pros,
+      days,
+      groups,
+      isOpen,
+      isFull: current.kind === 'full',
+      isClosed: current.kind === 'closed',
+      canContinue,
+      cannotContinue: !canContinue,
+      summaryTitle,
+      summaryDetail
+    };
+  }
+}
+</script>
+</body>
+</html>

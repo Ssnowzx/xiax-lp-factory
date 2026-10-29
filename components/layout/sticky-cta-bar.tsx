@@ -1,20 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { track } from "@/lib/analytics/track";
+
+import type { PageId } from "@/lib/content/types";
+
 import { mq } from "@/lib/ui/breakpoints";
-import { Button } from "@/components/ui/button";
+import { WhatsAppCta } from "@/components/ui/whatsapp-cta";
 
 /**
  * .cta-bar fixa (mobile, thumb-zone). UX/IA §5:
  *  - some ≥ md (BP dono único) — via matchMedia, não literal;
  *  - some quando #hero/#planos/#final estão visíveis (IntersectionObserver) →
  *    NUNCA 2 CTAs primários idênticos na mesma tela.
- * Âncora scroll para #planos (destino do CTA primário no funil).
+ * Abre o WhatsApp de vendas, a mesma ação dos 3 pontos (dono, 28/10/2026: "direto pro whatsapp").
  */
 const PRIMARY_SECTIONS = ["hero", "planos", "final"];
 
-export function StickyCtaBar() {
+export function StickyCtaBar({ page, greeting }: { page: PageId; greeting: string }) {
   const [visible, setVisible] = useState(false);
   const anchorsVisible = useRef(new Set<string>());
   const barRef = useRef<HTMLDivElement>(null);
@@ -63,6 +65,7 @@ export function StickyCtaBar() {
     <div
       ref={barRef}
       aria-hidden={!visible}
+      data-sticky-cta
       className={[
         "fixed inset-x-0 bottom-0 z-sticky-cta md:hidden",
         "border-t border-line bg-surface/95 backdrop-blur",
@@ -71,14 +74,7 @@ export function StickyCtaBar() {
         visible ? "translate-y-0" : "pointer-events-none translate-y-full",
       ].join(" ")}
     >
-      <Button asChild variant="accent" className="w-full">
-        <a
-          href="#planos"
-          onClick={() => track({ name: "cta_click", placement: "sticky" })}
-        >
-          Começar teste grátis <span aria-hidden="true">▸</span>
-        </a>
-      </Button>
+      <WhatsAppCta page={page} placement="sticky" message={greeting} className="w-full" />
     </div>
   );
 }

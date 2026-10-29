@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 // folha — a header segue RSC. PE: sem JS os links âncora funcionam igual (só sem o realce ativo).
 const NAV = [
   { href: "#como-funciona", label: "Como funciona" },
-  { href: "#planos", label: "Preço" },
+  { href: "#planos", label: "Planos" },
   { href: "#faq", label: "Dúvidas" },
 ];
 

@@ -59,7 +59,7 @@ export const xbarberTheme = {
   // escala de tipo por PAPEL + clamp fluido (display 8–20vw). [fontSize, {lineHeight, letterSpacing}]
   fontSize: {
     "display-2xl": ["clamp(4rem, 13vw, 10rem)", { lineHeight: "0.9", letterSpacing: "-0.01em" }],  // números gigantes
-    "display-xl": ["clamp(2.6rem, 7vw, 5.5rem)", { lineHeight: "0.95", letterSpacing: "-0.005em" }], // H1
+    "display-xl": ["var(--display-xl-size)", { lineHeight: "0.95", letterSpacing: "-0.005em" }], // H1 (size per theme)
     "display-lg": ["clamp(2rem, 4.5vw, 3.25rem)", { lineHeight: "1.0", letterSpacing: "0" }],          // H2
     // preço dominante do card de plano — clamp com TETO menor que display-lg: o card
     // ocupa ~1/4 do viewport no lg:grid-cols-4, então o vw não pode reger o tamanho

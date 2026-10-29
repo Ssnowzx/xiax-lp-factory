@@ -11,6 +11,7 @@
  * o contrato de dimensão (lib/data/gallery.ts). O `ui-engineer` liga `next/image`
  * nos slots do bento consumindo `sizes/target` daqui. Zero placeholder no fim.
  *
+ * `--salon-only` regenera só as fotos do salão (não reescreve as da barbearia).
  * Rodar: `npm run gallery:build` (também roda no `prebuild`). Idempotente.
  *
  * Regras:
@@ -40,7 +41,47 @@ const MAP = [
   { id: "gallery-06", src: "barbearia-produtos.jpg", kind: "photo", maxW: 1024 },
 ];
 
+// Salon page photos (change xiax-lp-v5-salon, task 6.4): PNG sources → exact-size WebP q82.
+// Mirrors SALON_GALLERY_SLOTS in lib/data/gallery.ts (all 16:9).
+const SALON_SRC = path.join(SRC, "salon");
+const SALON_OUT = path.join(OUT, "salon");
+const SALON_MAP = [
+  { id: "salon-01", w: 1600, h: 900 },
+  { id: "salon-02", w: 1200, h: 675 },
+  { id: "salon-03", w: 1024, h: 576 },
+  { id: "salon-04", w: 1024, h: 576 },
+  { id: "salon-05", w: 1024, h: 576 },
+];
+
+async function runSalon() {
+  await mkdir(SALON_OUT, { recursive: true });
+  for (const { id, w, h } of SALON_MAP) {
+    const input = path.join(SALON_SRC, `${id}.png`);
+    const output = path.join(SALON_OUT, `${id}.webp`);
+    // Centre-crop to 16:9 first, then Lanczos down to the exact slot size.
+    const meta = await sharp(input).metadata();
+    const cropH = Math.min(meta.height, Math.round((meta.width * 9) / 16));
+    const cropW = Math.round((cropH * 16) / 9);
+    await sharp(input)
+      .extract({
+        left: Math.floor((meta.width - cropW) / 2),
+        top: Math.floor((meta.height - cropH) / 2),
+        width: cropW,
+        height: cropH,
+      })
+      .resize(w, h, { kernel: "lanczos3" })
+      .webp({ quality: 82 })
+      .toFile(output);
+    const { size } = await stat(output);
+    console.log(`  ${id}  → public/gallery/salon/${id}.webp  ${w}x${h}  ${(size / 1024).toFixed(0)} KB`);
+  }
+}
+
 async function run() {
+  if (process.argv.includes("--salon-only")) {
+    await runSalon();
+    return;
+  }
   await mkdir(OUT, { recursive: true });
   const srcFiles = new Set(await readdir(SRC));
   let total = 0;
@@ -65,6 +106,7 @@ async function run() {
     const kb = (size / 1024).toFixed(0);
     console.log(`  ${id}  ${src} → public/gallery/${outName}  ${kb} KB`);
   }
+  await runSalon();
   console.log(`[gallery] ${MAP.length} masters otimizados · total ${(total / 1024).toFixed(0)} KB`);
 }
 

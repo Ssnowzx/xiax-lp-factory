@@ -106,6 +106,92 @@ html.anim-ready:not(.gsap-live) .reveal-group[data-revealed="true"] .reveal-item
 html.anim-ready:not(.gsap-live) .reveal-group[data-revealed="true"] .reveal-item:nth-child(3) { transition-delay: 0.12s; }
 html.anim-ready:not(.gsap-live) .reveal-group[data-revealed="true"] .reveal-item:nth-child(4) { transition-delay: 0.18s; }
 
+/* ---- Depth cards (v3 · 2.5D) — change xiax-lp-v3-cards-25d, design D2 ----
+   Two transform owners: [data-depth-card] (outer) belongs to the reveal and carries the
+   perspective; [data-depth-stage] (inner) belongs to the depth controller (rotateX/Y).
+   Layers sit at static heights. Every --depth-* var is set only by the controller when
+   motion is allowed, so with no JS / reduced motion everything is truly flat.
+   Structural rule: nothing between the stage and its layers may have overflow:hidden,
+   opacity < 1 or filter — those flatten 3D. The sheen clips itself in its own wrapper. */
+[data-depth-card] {
+  perspective: var(--depth-perspective, none);
+}
+[data-depth-stage] {
+  position: relative;
+  transform-style: preserve-3d;
+}
+/* Wrappers between the stage and a deep layer must pass the 3D context through. */
+[data-depth-pass] {
+  transform-style: preserve-3d;
+}
+[data-depth="1"],
+[data-depth="2"],
+[data-depth="3"] {
+  backface-visibility: hidden;
+}
+/* --depth-lift (0..1, per card) follows the tilt strength: flat card = aligned layers. */
+[data-depth="1"] { transform: translateZ(calc(var(--depth-1, 0px) * var(--depth-lift, 0))); }
+[data-depth="2"] { transform: translateZ(calc(var(--depth-2, 0px) * var(--depth-lift, 0))); }
+[data-depth="3"] { transform: translateZ(calc(var(--depth-3, 0px) * var(--depth-lift, 0))); }
+[data-depth-sheen] {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+[data-depth-sheen] > span {
+  position: absolute;
+  inset: -50%;
+  opacity: 0;
+  background: radial-gradient(closest-side, rgb(var(--accent) / 0.55), transparent);
+}
+
+/* ---- Leather surface (v3) — change xiax-lp-v3-cards-25d, design D8 -----------------
+   Barber-chair leather, pre-darkened to --base in the file itself (no overlay layer),
+   tiled and scrolling with the content (no background-attachment: fixed, which repaints
+   on scroll). Sections with their own solid background keep covering it. The variation is
+   the owner's choice: swap `leather-v2` for `leather-v1` (both in /public/textures).
+   Dark theme only: the file is darkened to the dark --base (no leather in light or Porcelana). */
+:root:not([data-theme="light"]):not([data-theme="porcelain"]) body {
+  background-image: url("/textures/leather-v2.webp");
+  background-image: image-set(
+    url("/textures/leather-v2.avif") type("image/avif"),
+    url("/textures/leather-v2.webp") type("image/webp")
+  );
+  background-size: 512px 512px;
+  background-repeat: repeat;
+}
+
+/* ---- Porcelana linen — change xiax-lp-v5-salon (owner, 2026-10-28: "a página não tem
+   textura"). Fine ivory linen, tiled and scrolling with the content like the leather; the file's
+   mean colour is --base, so flat areas keep the theme's ivory. Swap for `paper-v1` (procedural, in
+   /public/textures) if the owner prefers paper. */
+[data-theme="porcelain"] body,
+[data-theme="porcelain"] #conteudo > section:nth-child(even) {
+  background-image: url("/textures/linen-v1.webp");
+  background-image: image-set(
+    url("/textures/linen-v1.avif") type("image/avif"),
+    url("/textures/linen-v1.webp") type("image/webp")
+  );
+  background-size: 512px 512px;
+  background-repeat: repeat;
+}
+
+/* ---- Porcelana section rhythm — change xiax-lp-v5-salon (owner, 2026-10-28: "separar mais os
+   setores"). Every other section of the page sits on a sand band edged by hairlines: the same
+   linen multiplied by --band-tint, so the band keeps the weave and averages to --band. Inside it
+   the cards switch to the lighter --surface, so they still lift off the band. Salon only. */
+[data-theme="porcelain"] #conteudo > section:nth-child(even) {
+  --surface-raised: var(--surface);
+  --ink-subtle: var(--band-ink-subtle);
+  background-color: rgb(var(--band-tint));
+  background-blend-mode: multiply;
+  box-shadow:
+    inset 0 1px 0 rgb(var(--line)),
+    inset 0 -1px 0 rgb(var(--line));
+}
+
 /* ---- Radix Accordion (FAQ): expand/collapse por altura medida do Radix ----
    Usa --radix-accordion-content-height. Overflow:hidden no Content reserva a caixa;
    gated por anim-ready; reduced-motion neutraliza abaixo. */
@@ -154,6 +240,28 @@ html.anim-ready .overflow-hidden[data-state="open"] {
   box-shadow: var(--shadow-media);
   background-color: rgb(var(--surface-raised));
 }
+
+/* ArchFrame — the arched photo frame of Porcelana (change xiax-lp-v5-salon · D3 role, task 4.4):
+   the page's main photo wears it. Only the porcelain theme defines --arch-radius, so in the dark
+   theme the frame keeps its plain media radius. On a 16:9 photo a half-circle would eat the
+   picture, so the arch is elliptical (a basket arch). */
+.frame-arch {
+  border-radius: var(--arch-radius, var(--radius-media));
+}
+
+/* Porcelana reading (owner, 2026-10-28: "não dá de ler direito", "textos apagados"): text at
+   Manrope 500, and the FAQ questions — whole sentences — in the title serif and normal case
+   instead of spaced mono caps. Unlayered, so they beat the utilities; the dark theme is untouched. */
+[data-theme="porcelain"] body {
+  font-weight: 500;
+}
+[data-theme="porcelain"] .faq-question {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
 /* vazio premium: gradiente espresso + malha diagonal latão hairline (aria-hidden) */
 .media-frame[data-empty="true"]::before {
   content: "";
@@ -186,14 +294,24 @@ html.anim-ready .overflow-hidden[data-state="open"] {
   color: rgb(var(--ink-subtle));
 }
 
+/* Display titles (change xiax-lp-v5-salon · D3): case, tracking and weight come from the theme,
+   so one class serves the Anton capitals and the Porcelana serif. Unlayered on purpose: it must
+   beat the letter-spacing that the text-display-* / text-title sizes carry (utilities layer). */
+.type-display {
+  text-transform: var(--display-transform);
+  letter-spacing: var(--display-tracking);
+  font-weight: var(--display-weight);
+}
+
 /* ---- Sublinhado de latão desenhado ("acaba com a falta" — hero/final) ----
    Estático/reduced: já desenhado (scaleX 1). Com JS+motion: desenha 1x da esq→dir.
-   Só transform → CLS 0. */
-.mark-brass {
+   Só transform → CLS 0. v5 (xiax-lp-v5-salon · D3): the theme's highlight — the brass
+   underline in the dark theme, the accent italic in Porcelana (below). */
+.mark-accent {
   position: relative;
   white-space: nowrap;
 }
-.mark-brass::after {
+.mark-accent::after {
   content: "";
   position: absolute;
   left: 0;
@@ -207,9 +325,17 @@ html.anim-ready .overflow-hidden[data-state="open"] {
   transform: scaleX(1);
   transform-origin: left;
 }
-html.anim-ready .mark-brass::after {
+html.anim-ready .mark-accent::after {
   animation: draw-x var(--dur-micro-in) var(--ease-dramatic) both;
   animation-delay: 0.28s;
+}
+
+/* Porcelana: the highlight is the serif italic in the accent colour, as in the app — no line. */
+[data-theme="porcelain"] .mark-accent {
+  font-style: italic;
+}
+[data-theme="porcelain"] .mark-accent::after {
+  content: none;
 }
 
 /* Hairline conectora (trilho #como-funciona, moldura #planos): desenha 1x da esq→dir. */
@@ -242,16 +368,3 @@ html.anim-ready .hair-draw {
   }
 }
 
-/* ── rough-notation (WS3 · XIA-92) — ASSENTO do Front-end Architect ──────────
-   `.rn-target`: neutraliza o `<mark>` nativo (sem fundo/cor amarela do browser).
-   O texto fica normal e SELECIONÁVEL; a marcação latão é desenhada por cima como
-   SVG decorativo pela ilha `rough-notations.ts`. `.rough-annotation` é o SVG que a
-   lib appenda no body FORA do fluxo (position:absolute) → CLS 0; forçamos
-   `pointer-events:none` p/ o texto seguir clicável/selecionável. Tinta = --accent. */
-.rn-target {
-  background: transparent;
-  color: inherit;
-}
-.rough-annotation {
-  pointer-events: none;
-}

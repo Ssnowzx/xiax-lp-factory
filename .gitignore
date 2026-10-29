@@ -27,3 +27,6 @@ npm-debug.log*
 
 # tsc incremental
 *.tsbuildinfo
+
+# test coverage (vitest)
+coverage/

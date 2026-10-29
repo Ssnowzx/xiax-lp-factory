@@ -10,6 +10,9 @@ const P = {
   "bone-200": [226, 215, 196], "bone-300": [196, 182, 162], "bone-400": [156, 143, 124],
   "bone-500": [110, 98, 82], "bone-600": [92, 81, 66], "bone-900": [35, 28, 20],
   "brass-400": [214, 162, 78], "brass-700": [138, 90, 22],
+  // v3 leather surface (xiax-lp-v3-cards-25d · 7.2): brightest pixel of each tile, measured
+  // with sharp on public/textures/leather-v{1,2}.webp — the worst case for text on the page.
+  "leather-v1-max": [39, 35, 32], "leather-v2-max": [37, 33, 30],
 };
 const lin = ([r, g, b]) => {
   const f = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
@@ -26,6 +29,13 @@ const PAIRS = [
   ["LIGHT media-label ink-subtle/surface-raised", "bone-500", "bone-25", 4.5],
   ["LIGHT media-border line-strong/surface-raised", "espresso-500", "bone-25", 3],
   ["LIGHT check/anel accent/surface-raised", "brass-700", "bone-25", 3],
+  // v3: text that sits straight on the page base now sits on leather (dark theme only).
+  ...["leather-v1-max", "leather-v2-max"].flatMap((bg) => [
+    [`DARK  ink/${bg}`, "bone-100", bg, 4.5],
+    [`DARK  ink-muted/${bg}`, "bone-300", bg, 4.5],
+    [`DARK  ink-subtle/${bg}`, "bone-400", bg, 4.5],
+    [`DARK  accent/${bg}`, "brass-400", bg, 4.5],
+  ]),
 ];
 let fail = 0;
 for (const [label, fg, bg, min] of PAIRS) {

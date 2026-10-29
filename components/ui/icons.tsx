@@ -49,6 +49,19 @@ export function IconReminder({ className, ...rest }: IconProps) {
   );
 }
 
+/** Conversa no WhatsApp = balão redondo com o fone dentro, no traço da família. NÃO o logo do
+    WhatsApp (evita marca de terceiro); o rótulo do botão diz o destino. */
+export function IconChat({ className, ...rest }: IconProps) {
+  return (
+    <svg {...svgProps(className)} {...rest}>
+      {/* balão */}
+      <path d="M12 3.75a8.25 8.25 0 0 0-7.1 12.45L3.75 20.25l4.2-1.1A8.25 8.25 0 1 0 12 3.75Z" />
+      {/* fone */}
+      <path d="M9.1 8.3c.3-.3.8-.3 1.1 0l.9 1c.3.3.3.7.1 1l-.5.7c.5 1.1 1.3 1.9 2.4 2.4l.7-.5c.3-.2.7-.2 1 .1l1 .9c.3.3.3.8 0 1.1l-.6.6c-.6.6-1.6.7-2.4.3-2-1-3.6-2.6-4.6-4.6-.4-.8-.3-1.8.3-2.4l.6-.6Z" />
+    </svg>
+  );
+}
+
 /** Navalha reta em hairline — marcador de lista / âncora ótica (linha fina, não clip-art). */
 export function IconRazor({ className, ...rest }: IconProps) {
   return (

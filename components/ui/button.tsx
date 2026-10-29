@@ -14,7 +14,7 @@ const button = cva(
     variants: {
       variant: {
         solid: "bg-ink text-base hover:brightness-110",
-        accent: "bg-accent text-accent-ink hover:brightness-110", // CTA "Começar teste grátis"
+        accent: "bg-accent text-accent-ink hover:brightness-110", // CTA "Testar 14 dias grátis"
         outline: "border border-line-strong text-ink hover:bg-surface", // "Entrar" [CTA-o]
         ghost: "text-ink-muted hover:text-ink hover:bg-surface",
       },

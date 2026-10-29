@@ -113,6 +113,14 @@
      acoplar import ao seat. Enquanto esta var não existir, o loop fica inerte por
      design. Mirror de DUR.loop (lib/motion/motion-tokens.ts). Um valor, uma origem. */
   --dur-loop: 2.4s;
+
+  /* Display-title role (change xiax-lp-v5-salon · D3), read by `.type-display`: the dark and light
+     themes set Anton in capitals; Porcelana overrides with Fraunces in normal case. */
+  --display-transform: uppercase;
+  --display-tracking: 0.014em; /* = tracking-display-upper (lib/ui/theme.ts) */
+  --display-weight: 400;
+  /* H1 size: the barbershop clamp; Porcelana sets its own. */
+  --display-xl-size: clamp(2.6rem, 7vw, 5.5rem);
 }
 
 /* =============================================================================
@@ -224,6 +232,76 @@
   --shadow-e3: 0 8px 20px -4px rgb(35 28 20 / 0.14);
   --shadow-e4: 0 16px 36px -8px rgb(35 28 20 / 0.18);
   --shadow-e5: 0 28px 64px -12px rgb(35 28 20 / 0.22);
+}
+
+/* =============================================================================
+   PORCELANA (data-theme="porcelain") — the salon page (change xiax-lp-v5-salon · D3).
+   The app's Porcelana recipe (APPbarbearia docs/DESIGN-SYSTEM.md §3–5): ivory, terracotta,
+   serif titles in normal case (Fraunces on the page, Bodoni Moda in the app), pill buttons, shadows tinted with the text colour and no
+   leather. Colours are literal "r g b" triplets so lib/ui/contrast.test.ts can prove every pair.
+   ============================================================================= */
+[data-theme="porcelain"] {
+  color-scheme: light;
+
+  --base: 246 241 234;            /* #F6F1EA */
+  --surface: 253 250 245;         /* #FDFAF5 */
+  --surface-raised: 239 232 222;  /* #EFE8DE */
+  /* Sand of every other salon section (owner, 2026-10-28: "separar mais os setores"); inside a
+     band the cards turn to --surface, so they still lift off it. */
+  --band: 236 227 214;            /* #ECE3D6 · ink-subtle 4.6:1, accent 5.7:1 */
+  /* Multiplied over the linen (whose mean is the base colour) it averages to the band colour,
+     so tint = band ÷ base × 255. */
+  --band-tint: 245 240 233;
+  --overlay: 28 23 20;           /* #1C1714, used with alpha */
+
+  --ink: 28 23 20;                /* #1C1714 · 14.6–17.1:1 */
+  /* Owner, 2026-10-28: "textos apagados" — body copy one step darker than the app's #6E625A. */
+  --ink-muted: 84 74 67;          /* #544A43 · ~8:1 on ivory */
+  --ink-subtle: 110 98 90;        /* #6E625A · 4.9–5.7:1: labels and notes, nothing lighter passes AA */
+  /* Labels inside a sand band, where the linen's dark weave would pull ink-subtle under AA. */
+  --band-ink-subtle: 100 89 82;   /* #645952 · 4.6:1 on the band's darkest weave */
+
+  --line: 227 217 204;            /* #E3D9CC · decorative divider */
+  --line-strong: 136 124 112;     /* #887C70 · control outline, 3.2–3.9:1 (a step under the app's #8F8377, so it holds on the sand band) */
+
+  --accent: 123 74 60;            /* #7B4A3C terracotta · 6.0–7.0:1 as text */
+  --accent-ink: 251 247 241;      /* #FBF7F1 · 6.8:1 on the accent */
+  --accent-quiet: 123 74 60;
+
+  --success: 27 109 68;           /* #1B6D44 */
+  --success-ink: 251 247 241;
+  --warning: 142 81 0;            /* #8E5100 */
+  --warning-ink: 251 247 241;
+  --danger: 180 35 24;            /* #B42318 */
+  --danger-ink: 251 247 241;
+  --info: 31 95 168;              /* #1F5FA8 */
+  --info-ink: 251 247 241;
+
+  /* warm and light: tinted with the text colour, never grey or black */
+  --shadow-e1: 0 1px 2px rgb(28 23 20 / 0.06), 0 4px 12px rgb(28 23 20 / 0.04);
+  --shadow-e2: 0 2px 6px rgb(28 23 20 / 0.06), 0 6px 16px rgb(28 23 20 / 0.05);
+  --shadow-e3: 0 8px 24px -4px rgb(28 23 20 / 0.08);
+  --shadow-e4: 0 16px 40px -8px rgb(28 23 20 / 0.10);
+  --shadow-e5: 0 28px 64px -12px rgb(28 23 20 / 0.12);
+
+  /* the app's Porcelana radii; every button is a pill */
+  --radius-control: 9999px;
+  --radius-field: 16px;
+  --radius-surface: 20px;
+  --radius-window: 28px;
+  --radius-media: 20px;
+  /* The arch of the salon photos: full-width elliptical top, the media radius at the bottom. */
+  --arch-radius: 50% 50% 20px 20px / 34% 34% 20px 20px;
+
+  /* Fraunces titles in normal case, no capitals (the app uses Bodoni Moda 400; too thin on the page) */
+  --display-transform: none;
+  --display-tracking: -0.01em;
+  /* Fraunces at 500: firm strokes that stay readable on ivory down to the card titles. */
+  --display-weight: 500;
+  /* The serif italic is wider than Anton caps: the hero title must clear the phone (D3). */
+  --display-xl-size: clamp(2.4rem, 5.6vw, 5rem);
+  /* No mono in Porcelana: the "mono" labels are Manrope in spaced caps, as in the app (D3). */
+  --font-mono: var(--font-sans);
 }
 
 /* =============================================================================
