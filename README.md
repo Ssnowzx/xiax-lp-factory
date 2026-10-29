@@ -143,6 +143,11 @@ node scripts/capture-screens.mjs <url-do-quadro> assets/screens-src [nome…]   
 node scripts/optimize-screens.mjs [recorte…]                                   # recortes em public/screens/
 ```
 
+**Estilos da seção de modelos** — a tela de início em cada receita de tema, capturada no próprio app em 2x, fica em
+`assets/screens-src/themes/<id>@2x.png` (nomes e descrições em `themes.json`). Os recortes se chamam `theme-<id>`:
+`node scripts/optimize-screens.mjs theme-navalha theme-rose …`. Os textos de cada estilo ficam no conteúdo da página
+(`showcase.themes`).
+
 **Fotos da galeria** — geradas com a direção de arte do Porcelana (prompts em `assets/prompts/gallery-salon.md`),
 originais em `assets/gallery-src/salon/`:
 
@@ -161,3 +166,5 @@ node scripts/optimize-gallery.mjs --salon-only   # só as fotos do salão em pub
 - `openspec/changes/xiax-lp-v4-xchair/` — marca Xchair, telas reais, texto honesto, CTA só no WhatsApp.
 - `openspec/changes/xiax-lp-v5-salon/` — página do salão (`/salao`) no tema Porcelana; revisão do dono em
   `openspec/changes/xiax-lp-v5-salon/review-salon.md`.
+- `openspec/changes/xiax-lp-v6-theme-showcase/` — `#modelos` mostra os quatro estilos de cada página (vitrine, sem
+  seletor); o dono troca o estilo no painel do app.

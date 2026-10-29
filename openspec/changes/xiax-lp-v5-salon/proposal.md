@@ -91,7 +91,8 @@ seções. Uma segunda página copiada dobraria cada correção.
 - **Domínio e publicação no servidor:** o dono faz depois.
 - **Link cruzado entre as páginas:** a página da barbearia continua sem falar de salão, e a do salão sem falar de
   barbearia.
-- **Os temas Rosé, Sálvia e Noite de Gala:** só são citados como "mais estilos em breve".
+- **Os temas Rosé, Sálvia e Noite de Gala:** só são citados como "mais estilos em breve". (Revisto em
+  `xiax-lp-v6-theme-showcase`: o app passou a entregar os quatro, e a seção de modelos mostra todos.)
 - **Depoimentos, logos de clientes e números sem fonte:** continuam proibidos.
 - **Construir no app** qualquer recurso de salão.
 

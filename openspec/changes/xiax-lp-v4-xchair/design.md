@@ -50,7 +50,8 @@ por `components/ui/whatsapp-bubble.tsx`. Nomes/datas fictícios; endereço da lo
 
 ### D5. Modelos vira a página real
 `components/sections/modelos.tsx` + `lib/data/modelos.ts` mostram a única página (Navalha) num
-celular. O seletor de quatro estilos e cores vendia o que não existe.
+celular. O seletor de quatro estilos e cores vendia o que não existe. (Revisto em `xiax-lp-v6-theme-showcase`: com
+as receitas entregues no app, a seção mostra os quatro estilos do segmento, ainda sem seletor.)
 *Alternativa:* manter o seletor com um item só — rejeitada: dava a impressão de escolha.
 
 ### D6. Duas seções novas no meio do funil
