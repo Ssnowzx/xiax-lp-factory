@@ -127,4 +127,39 @@ describe("barbershop content", () => {
     expect(strings.length).toBeGreaterThan(100);
     expect(salon).toEqual([]);
   });
+
+  it("should show the four looks of the segment with Navalha as the default", () => {
+    // ARRANGE
+    const { items } = BARBERSHOP.showcase.themes;
+
+    // ACT
+    const names = items.map((theme) => theme.name);
+    const defaults = items.filter((theme) => theme.isDefault).map((theme) => theme.name);
+
+    // ASSERT
+    expect(names).toEqual(["Navalha", "Velha Guarda", "Poste", "Oficina"]);
+    expect(defaults).toEqual(["Navalha"]);
+  });
+
+  it("should give every look its own screen", () => {
+    // ARRANGE
+    const { items } = BARBERSHOP.showcase.themes;
+
+    // ACT
+    const sources = new Set(items.map((theme) => theme.screen.src));
+
+    // ASSERT
+    expect(sources.size).toBe(items.length);
+  });
+
+  it("should tell the owner the look is switched in the panel, not picked on the page", () => {
+    // ARRANGE
+    const { note } = BARBERSHOP.showcase.themes;
+
+    // ACT
+    const pointsToPanel = /painel/.test(note);
+
+    // ASSERT
+    expect(pointsToPanel).toBe(true);
+  });
 });

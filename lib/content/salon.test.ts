@@ -190,4 +190,39 @@ describe("salon content", () => {
     // ASSERT
     expect(tool).toBe("brush");
   });
+
+  it("should show the four looks of the segment with Porcelana as the default", () => {
+    // ARRANGE
+    const { items } = SALON.showcase.themes;
+
+    // ACT
+    const names = items.map((theme) => theme.name);
+    const defaults = items.filter((theme) => theme.isDefault).map((theme) => theme.name);
+
+    // ASSERT
+    expect(names).toEqual(["Porcelana", "Rosé", "Sálvia", "Noite de Gala"]);
+    expect(defaults).toEqual(["Porcelana"]);
+  });
+
+  it("should give every look its own screen", () => {
+    // ARRANGE
+    const { items } = SALON.showcase.themes;
+
+    // ACT
+    const sources = new Set(items.map((theme) => theme.screen.src));
+
+    // ASSERT
+    expect(sources.size).toBe(items.length);
+  });
+
+  it("should tell the owner the look is switched in the panel, not picked on the page", () => {
+    // ARRANGE
+    const { note } = SALON.showcase.themes;
+
+    // ACT
+    const pointsToPanel = /painel/.test(note);
+
+    // ASSERT
+    expect(pointsToPanel).toBe(true);
+  });
 });

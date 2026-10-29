@@ -160,13 +160,36 @@ export const BARBERSHOP: PageContent = {
       "Área do cliente com o próximo horário, o histórico e “repetir o último serviço”",
       "Cartão fidelidade digital: a cada tantos cortes, um benefício",
     ],
-    // The one style that exists today (Navalha), and the honest note about the others.
-    style: {
-      name: "Estilo Navalha",
-      description: "Escuro de luxo, detalhes em champanhe e títulos em serifa.",
-      soon: "Mais estilos em breve",
+    // The barbershop looks the owner switches between in the panel (Configurações › Aparência),
+    // all live today. Shown so the owner knows the page can change, never as a pick-one-here.
+    themes: {
+      title: "Quatro estilos. Um é a cara da sua barbearia.",
+      note: "Você escolhe no painel, em Configurações, e troca quando quiser. Fotos, serviços e horários continuam no lugar.",
+      defaultLabel: "Padrão",
+      items: [
+        {
+          name: "Navalha",
+          description: "Escuro e sofisticado, com detalhes em champanhe e títulos em serifa.",
+          screen: SCREENS.themeNavalha,
+          isDefault: true,
+        },
+        {
+          name: "Velha Guarda",
+          description: "Madeira escura e dourado envelhecido, com títulos em serifa clássica.",
+          screen: SCREENS.themeVelhaGuarda,
+        },
+        {
+          name: "Poste",
+          description: "Papel claro e vermelho de poste, com títulos condensados em caixa alta.",
+          screen: SCREENS.themePoste,
+        },
+        {
+          name: "Oficina",
+          description: "Verde-garrafa quase preto e latão, com títulos condensados em caixa alta.",
+          screen: SCREENS.themeOficina,
+        },
+      ],
     },
-    screen: SCREENS.barbershopHome,
   },
 
   plans: {

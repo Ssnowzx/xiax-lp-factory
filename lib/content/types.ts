@@ -186,14 +186,31 @@ export interface GalleryContent {
   slots: readonly GallerySlot[];
 }
 
+/** One look of the booking page, as the app wears it. */
+export interface ShowcaseTheme {
+  name: string;
+  description: string;
+  screen: Screen;
+  /** The look the page opens in before the owner picks one. */
+  isDefault?: boolean;
+}
+
 export interface ShowcaseContent {
   kicker: string;
   title: string;
   body: string;
   features: readonly string[];
-  /** The page style that exists today and the honest note about the others. */
-  style: { name: string; description: string; soon: string };
-  screen: Screen;
+  /**
+   * The looks the owner switches between in the panel (Configurações). Shown so the owner knows
+   * the page can change; the page never asks them to pick one here.
+   */
+  themes: {
+    title: string;
+    note: string;
+    /** Badge on the look marked `isDefault`. */
+    defaultLabel: string;
+    items: readonly ShowcaseTheme[];
+  };
 }
 
 export interface PlanCardContent {

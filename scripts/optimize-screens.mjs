@@ -47,6 +47,13 @@ const SLOTS = [
   { slot: "salon-attention-today", master: "salon-day-agenda", scale: 3, crop: { x: 1080, y: 236, w: 336, h: 380 } },
   // Month chart of the salon's own light board (no forecast box: the app has no forecast yet, see owner-insights)
   { slot: "salon-month-results", master: "salon-month-results", crop: { x: 255, y: 90, w: 740, h: 424 } },
+  // The booking page's home in each look the owner picks in the panel (#modelos). Masters in
+  // `themes/`, captured by the app; names and descriptions in `themes/themes.json`.
+  ...["navalha", "velha-guarda", "poste", "oficina", "porcelana", "rose", "salvia", "noite-de-gala"].map((id) => ({
+    slot: `theme-${id}`,
+    master: `themes/${id}`,
+    crop: null,
+  })),
 ];
 
 async function cut({ slot, master, scale = SCALE, crop }) {

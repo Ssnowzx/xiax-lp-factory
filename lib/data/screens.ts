@@ -27,7 +27,15 @@ export type ScreenId =
   | "salonStepDayAgenda"
   | "salonStepConfirmed"
   | "salonAttentionToday"
-  | "salonMonthResults";
+  | "salonMonthResults"
+  | "themeNavalha"
+  | "themeVelhaGuarda"
+  | "themePoste"
+  | "themeOficina"
+  | "themePorcelana"
+  | "themeRose"
+  | "themeSalvia"
+  | "themeNoiteDeGala";
 
 export const SCREENS: Record<ScreenId, Screen> = {
   barbershopHome: {
@@ -114,5 +122,53 @@ export const SCREENS: Record<ScreenId, Screen> = {
     height: 848,
     alt: "Gráfico de faturamento acumulado do mês: R$ 48.320 até o dia 28, acima da linha de setembro e perto da meta de R$ 55 mil.",
   },
+  // The home of the booking page in each look the owner picks in the panel (#modelos).
+  themeNavalha: {
+    src: "/screens/theme-navalha.webp",
+    width: 780,
+    height: 1688,
+    alt: "Página de uma barbearia de exemplo no estilo Navalha: fundo escuro, o nome Barbearia Central em serifa com detalhe champanhe e o botão Agendar horário em champanhe.",
+  },
+  themeVelhaGuarda: {
+    src: "/screens/theme-velha-guarda.webp",
+    width: 780,
+    height: 1688,
+    alt: "Página de uma barbearia de exemplo no estilo Velha Guarda: fundo de madeira escura, o nome Barbearia Central em serifa clássica com detalhe em dourado envelhecido e o botão Agendar horário dourado.",
+  },
+  themePoste: {
+    src: "/screens/theme-poste.webp",
+    width: 780,
+    height: 1688,
+    alt: "Página de uma barbearia de exemplo no estilo Poste: papel claro abaixo da foto, o nome Barbearia Central em letras condensadas com destaque vermelho e o botão Agendar horário vermelho.",
+  },
+  themeOficina: {
+    src: "/screens/theme-oficina.webp",
+    width: 780,
+    height: 1688,
+    alt: "Página de uma barbearia de exemplo no estilo Oficina: fundo verde-garrafa quase preto, o nome Barbearia Central em letras condensadas com destaque em latão e o botão Agendar horário em latão.",
+  },
+  themePorcelana: {
+    src: "/screens/theme-porcelana.webp",
+    width: 780,
+    height: 1688,
+    alt: "Página de um salão de exemplo no estilo Porcelana: fundo marfim, foto em arco, o nome Salão Aurora em serifa com destaque terracota e o botão Agendar horário terracota.",
+  },
+  themeRose: {
+    src: "/screens/theme-rose.webp",
+    width: 780,
+    height: 1688,
+    alt: "Página de um salão de exemplo no estilo Rosé: fundo blush claro, foto em arco, o nome Salão Aurora em serifa delicada com destaque rosa queimado e o botão Agendar horário rosa queimado.",
+  },
+  themeSalvia: {
+    src: "/screens/theme-salvia.webp",
+    width: 780,
+    height: 1688,
+    alt: "Página de um salão de exemplo no estilo Sálvia: fundo de névoa verde, foto em arco, o nome Salão Aurora em serifa suave com destaque verde e o botão Agendar horário verde-sálvia.",
+  },
+  themeNoiteDeGala: {
+    src: "/screens/theme-noite-de-gala.webp",
+    width: 780,
+    height: 1688,
+    alt: "Página de um salão de exemplo no estilo Noite de Gala: fundo ameixa quase preto, foto em arco, o nome Salão Aurora em serifa de alto contraste com destaque blush e o botão Agendar horário blush.",
+  },
 };
-

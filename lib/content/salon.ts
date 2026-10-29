@@ -180,13 +180,36 @@ export const SALON: PageContent = {
       "Área da cliente com o próximo horário, o histórico e “repetir o último serviço”",
       "Cartão fidelidade digital: a cada tantas visitas, um benefício",
     ],
-    // Porcelana is the salon style the app has today; Rosé, Sálvia and Noite de Gala are not out yet.
-    style: {
-      name: "Estilo Porcelana",
-      description: "Marfim, detalhes em terracota e títulos em serifa.",
-      soon: "Mais estilos em breve",
+    // The salon looks the owner switches between in the panel (Configurações › Aparência), all
+    // live today. Shown so the owner knows the page can change, never as a pick-one-here.
+    themes: {
+      title: "Quatro estilos. Um é a cara do seu salão.",
+      note: "Você escolhe no painel, em Configurações, e troca quando quiser. Fotos, serviços e horários continuam no lugar.",
+      defaultLabel: "Padrão",
+      items: [
+        {
+          name: "Porcelana",
+          description: "Marfim editorial, com acento terracota e títulos em serifa de alto contraste.",
+          screen: SCREENS.themePorcelana,
+          isDefault: true,
+        },
+        {
+          name: "Rosé",
+          description: "Blush claro e rosa queimado, com títulos em serifa delicada.",
+          screen: SCREENS.themeRose,
+        },
+        {
+          name: "Sálvia",
+          description: "Névoa verde e sálvia, com títulos em serifa suave e cantos arredondados.",
+          screen: SCREENS.themeSalvia,
+        },
+        {
+          name: "Noite de Gala",
+          description: "Ameixa quase preta e blush champanhe, com títulos em serifa de alto contraste.",
+          screen: SCREENS.themeNoiteDeGala,
+        },
+      ],
     },
-    screen: SCREENS.salonHome,
   },
 
   plans: {

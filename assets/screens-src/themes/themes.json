@@ -1,0 +1,60 @@
+{
+  "themes": [
+    {
+      "id": "navalha",
+      "name": "Navalha",
+      "segment": "Barbearia",
+      "description": "Escuro e sofisticado, com detalhes em champanhe e títulos em serifa.",
+      "image": "navalha@2x.png"
+    },
+    {
+      "id": "velha-guarda",
+      "name": "Velha Guarda",
+      "segment": "Barbearia",
+      "description": "Madeira escura e dourado envelhecido, com títulos em serifa clássica.",
+      "image": "velha-guarda@2x.png"
+    },
+    {
+      "id": "poste",
+      "name": "Poste",
+      "segment": "Barbearia",
+      "description": "Papel claro e vermelho de poste, com títulos condensados em caixa alta.",
+      "image": "poste@2x.png"
+    },
+    {
+      "id": "oficina",
+      "name": "Oficina",
+      "segment": "Barbearia",
+      "description": "Verde-garrafa quase preto e latão, com títulos condensados em caixa alta.",
+      "image": "oficina@2x.png"
+    },
+    {
+      "id": "porcelana",
+      "name": "Porcelana",
+      "segment": "Salão",
+      "description": "Marfim editorial, com acento terracota e títulos em serifa de alto contraste.",
+      "image": "porcelana@2x.png"
+    },
+    {
+      "id": "rose",
+      "name": "Rosé",
+      "segment": "Salão",
+      "description": "Blush claro e rosa queimado, com títulos em serifa delicada.",
+      "image": "rose@2x.png"
+    },
+    {
+      "id": "salvia",
+      "name": "Sálvia",
+      "segment": "Salão",
+      "description": "Névoa verde e sálvia, com títulos em serifa suave e cantos arredondados.",
+      "image": "salvia@2x.png"
+    },
+    {
+      "id": "noite-de-gala",
+      "name": "Noite de Gala",
+      "segment": "Salão",
+      "description": "Ameixa quase preta e blush champanhe, com títulos em serifa de alto contraste.",
+      "image": "noite-de-gala@2x.png"
+    }
+  ]
+}
