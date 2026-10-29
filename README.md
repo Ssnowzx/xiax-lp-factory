@@ -43,7 +43,7 @@ Não há variáveis de ambiente obrigatórias para rodar localmente. Para public
 
 | Variável | Para quê | Padrão |
 |---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | domínio final: endereço canônico, sitemap, imagem de compartilhamento | `http://localhost:3000` |
+| `NEXT_PUBLIC_SITE_URL` | domínio final: endereço canônico, sitemap, imagem de compartilhamento. Na Vercel, sem ela, vale o endereço de produção do projeto; defina na VPS | `http://localhost:3000` |
 | `NEXT_PUBLIC_SALES_WHATSAPP` | número do WhatsApp de vendas (só dígitos, com 55) | `5549991613378` |
 | `NEXT_PUBLIC_CHECKOUT_URL` | checkout do Essencial; sem ele, o botão do plano abre o WhatsApp | — |
 
